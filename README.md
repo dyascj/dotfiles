@@ -1,6 +1,6 @@
 # dotfiles
 
-catppuccin mocha theme for ghostty, zen browser, sketchybar, and more.
+catppuccin mocha theme for ghostty, sketchybar, and more.
 
 ## what's in here
 
@@ -11,15 +11,12 @@ dotfiles/
 │   └── catppuccin-mocha.conf
 ├── vscode/
 │   └── settings.json
-├── zen-browser/
-│   ├── userChrome.css
-│   └── userContent.css
 ├── sketchybar/
 │   ├── sketchybarrc
 │   └── plugins/
-├── yabai/
-│   ├── yabairc
-│   └── skhdrc
+│       ├── cpu.sh
+│       ├── ram.sh
+│       └── space.sh
 └── starship.toml
 ```
 
@@ -59,21 +56,9 @@ cp vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp vscode/settings.json ~/.config/Code/User/settings.json
 ```
 
-### zen browser
-
-1. go to `about:config`
-2. set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`
-3. go to `about:support` → click "Open Profile Folder"
-4. make a `chrome` folder if it doesn't exist
-5. copy the css files there:
-
-```bash
-cp zen-browser/*.css ~/Library/Application\ Support/zen/Profiles/*.Default*/chrome/
-```
-
-6. restart zen
-
 ### sketchybar
+
+minimal floating badges showing CPU, RAM, and desktop spaces.
 
 ```bash
 brew install FelixKratz/formulae/sketchybar
@@ -82,23 +67,13 @@ chmod +x ~/.config/sketchybar/plugins/*
 brew services start sketchybar
 ```
 
-hide the default menu bar:
-```bash
-defaults write NSGlobalDomain _HIHideMenuBar -bool true && killall Finder
-```
+features:
+- transparent bar with floating pill-shaped badges
+- left side: clickable desktop spaces (1-5)
+- right side: CPU % and RAM usage
+- click CPU/RAM to open Activity Monitor
 
-### yabai
-
-```bash
-brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd
-cp yabai/yabairc ~/.yabairc
-cp yabai/skhdrc ~/.skhdrc
-chmod +x ~/.yabairc
-yabai --start-service
-skhd --start-service
-```
-
-grant accessibility permissions when prompted.
+note: clicking spaces requires enabling keyboard shortcuts in System Settings > Keyboard > Keyboard Shortcuts > Mission Control > Switch to Desktop 1-5 (ctrl+1 through ctrl+5).
 
 ### starship
 
@@ -112,21 +87,8 @@ add to your shell rc:
 eval "$(starship init zsh)"
 ```
 
-## hotkeys
-
-| key | action |
-|-----|--------|
-| alt + hjkl | focus window |
-| shift + alt + hjkl | swap window |
-| alt + 1-5 | switch space |
-| shift + alt + 1-5 | move window to space |
-| alt + f | fullscreen |
-| alt + t | toggle float |
-| alt + r | rotate layout |
-
 ## notes
 
 - ghostty uses hack nerd font
-- zen uses blue (`#89b4fa`) for active tabs, mauve (`#cba6f7`) for accents
-- sketchybar floats with rounded corners
-- yabai uses bsp tiling with 10px gaps
+- sketchybar uses floating badges with 70% opacity backgrounds
+- all configs use catppuccin mocha mauve (`#cba6f7`) as the primary accent

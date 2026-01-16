@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Coffee colors
-ACTIVE_COLOR=0xffe6b55a     # golden accent
-INACTIVE_COLOR=0xff7a6a52   # muted
+# Catppuccin Mocha colors
+ACTIVE_COLOR=0xffcba6f7     # mauve (accent)
+INACTIVE_COLOR=0xff6c7086   # overlay0
 
 if [ "$SELECTED" = "true" ]; then
   sketchybar --set "$NAME" background.drawing=on \

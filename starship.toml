@@ -1,0 +1,64 @@
+# Catppuccin Mocha starship prompt
+
+format = """
+[](#313244)\
+$directory\
+$git_branch\
+$git_status\
+[](fg:#313244 bg:#1e1e2e)\
+$nodejs\
+$python\
+$rust\
+$golang\
+[](fg:#1e1e2e)\
+$fill\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+style = "fg:#cdd6f4 bg:#313244"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "fg:#fab387 bg:#313244"
+format = "[ $symbol $branch ]($style)"
+
+[git_status]
+style = "fg:#fab387 bg:#313244"
+format = "[$all_status$ahead_behind ]($style)"
+
+[nodejs]
+symbol = ""
+style = "fg:#a6e3a1 bg:#1e1e2e"
+format = "[ $symbol $version ]($style)"
+
+[python]
+symbol = ""
+style = "fg:#89b4fa bg:#1e1e2e"
+format = "[ $symbol $version ]($style)"
+
+[rust]
+symbol = ""
+style = "fg:#f38ba8 bg:#1e1e2e"
+format = "[ $symbol $version ]($style)"
+
+[golang]
+symbol = ""
+style = "fg:#94e2d5 bg:#1e1e2e"
+format = "[ $symbol $version ]($style)"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+style = "fg:#6c7086"
+format = "[$duration]($style)"
+min_time = 2_000
+
+[character]
+success_symbol = "[❯](fg:#fab387)"
+error_symbol = "[❯](fg:#f38ba8)"

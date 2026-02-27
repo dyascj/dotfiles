@@ -1,0 +1,13 @@
+# Auto-generated
+.config/nvim/lazy-lock.json
+
+# Secrets & credentials
+.netrc
+.claude.json
+
+# Shell state
+.zsh_history
+.zsh_sessions/
+
+# Caches
+.cache/

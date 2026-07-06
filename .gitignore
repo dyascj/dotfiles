@@ -1,0 +1,21 @@
+# Auto-generated
+.config/nvim/lazy-lock.json
+
+# Secrets & credentials
+.netrc
+.claude.json
+
+# Machine-local shell config
+.zshrc.local
+
+# Shell state
+.zsh_history
+.zsh_sessions/
+
+# Caches
+.cache/
+.animawake
+
+# macOS noise
+.DS_Store
+**/.DS_Store

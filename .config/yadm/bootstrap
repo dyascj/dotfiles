@@ -1,0 +1,69 @@
+#!/bin/bash
+set -e
+
+echo "==> Starting yadm bootstrap..."
+
+# Install Homebrew if missing
+if ! command -v brew &>/dev/null; then
+    echo "==> Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Install packages from Brewfile
+echo "==> Installing Homebrew packages..."
+brew bundle --global
+
+# Install VS Code extensions
+VSCODE_EXT_LIST="$HOME/.config/yadm/vscode-extensions.txt"
+VSCODE_BIN="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+if [ -x "$VSCODE_BIN" ] && [ -f "$VSCODE_EXT_LIST" ]; then
+    echo "==> Installing VS Code extensions..."
+    while IFS= read -r extension; do
+        [ -n "$extension" ] && "$VSCODE_BIN" --install-extension "$extension" --force
+    done < "$VSCODE_EXT_LIST"
+else
+    echo "==> Skipping VS Code extensions (VS Code not found or extension list missing)"
+fi
+
+# Set zsh as default shell if needed
+if [ "$SHELL" != "$(which zsh)" ]; then
+    echo "==> Setting zsh as default shell..."
+    chsh -s "$(which zsh)"
+fi
+
+# Link zen userChrome into the default profile (profile dir name is machine-specific)
+ZEN_DIR="$HOME/Library/Application Support/zen"
+ZEN_CSS="$HOME/.config/zen/chrome/userChrome.css"
+if [ -f "$ZEN_DIR/profiles.ini" ] && [ -f "$ZEN_CSS" ]; then
+    ZEN_PROFILE=$(awk -F= '/^\[Install/{f=1} f && /^Default=/{print $2; exit}' "$ZEN_DIR/profiles.ini")
+    if [ -n "$ZEN_PROFILE" ] && [ -d "$ZEN_DIR/$ZEN_PROFILE" ]; then
+        echo "==> Linking zen userChrome into $ZEN_PROFILE..."
+        mkdir -p "$ZEN_DIR/$ZEN_PROFILE/chrome"
+        ln -sf "$ZEN_CSS" "$ZEN_DIR/$ZEN_PROFILE/chrome/userChrome.css"
+        # userChrome.css only loads with this pref enabled
+        ZEN_USERJS="$ZEN_DIR/$ZEN_PROFILE/user.js"
+        if ! grep -q legacyUserProfileCustomizations "$ZEN_USERJS" 2>/dev/null; then
+            echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$ZEN_USERJS"
+        fi
+    fi
+else
+    echo "==> Skipping zen theme (no profile yet, rerun bootstrap after first launch)"
+fi
+
+# Link the obsidian theme into every registered vault
+OBSIDIAN_JSON="$HOME/Library/Application Support/obsidian/obsidian.json"
+OBSIDIAN_THEME="$HOME/.config/obsidian/themes/Icebergs"
+if [ -f "$OBSIDIAN_JSON" ] && [ -d "$OBSIDIAN_THEME" ]; then
+    echo "==> Linking obsidian theme into vaults..."
+    grep -oE '"path"[[:space:]]*:[[:space:]]*"[^"]*"' "$OBSIDIAN_JSON" | sed -E 's/.*"path"[[:space:]]*:[[:space:]]*"(.*)"/\1/' | while IFS= read -r vault; do
+        if [ -d "$vault/.obsidian" ] && [ ! -e "$vault/.obsidian/themes/Icebergs" ]; then
+            mkdir -p "$vault/.obsidian/themes"
+            ln -s "$OBSIDIAN_THEME" "$vault/.obsidian/themes/Icebergs"
+        fi
+    done
+else
+    echo "==> Skipping obsidian theme (no vaults yet, rerun bootstrap after first launch)"
+fi
+
+echo "==> Bootstrap complete!"

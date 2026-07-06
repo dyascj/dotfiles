@@ -1,0 +1,180 @@
+/* Icebergs
+ * colors from Frederic Edwin Church, "The Icebergs" (1861)
+ * same palette as the ghostty, vscode, nvim, and zen setups
+ */
+
+body {
+  --accent-h: 31;
+  --accent-s: 51%;
+  --accent-l: 65%;
+}
+
+.theme-dark {
+  color-scheme: dark;
+
+  --color-base-00: #101a19;
+  --color-base-05: #131e1c;
+  --color-base-10: #15201e;
+  --color-base-20: #182422;
+  --color-base-25: #1d2b28;
+  --color-base-30: #2e403d;
+  --color-base-35: #3a4f4b;
+  --color-base-40: #4a625c;
+  --color-base-50: #6e8380;
+  --color-base-60: #93a5a1;
+  --color-base-70: #d9d2c5;
+  --color-base-100: #e8e0d4;
+
+  --color-red-rgb: 199, 111, 92;
+  --color-red: #c76f5c;
+  --color-orange-rgb: 220, 138, 117;
+  --color-orange: #dc8a75;
+  --color-yellow-rgb: 229, 189, 146;
+  --color-yellow: #e5bd92;
+  --color-green-rgb: 99, 166, 143;
+  --color-green: #63a68f;
+  --color-cyan-rgb: 131, 184, 176;
+  --color-cyan: #83b8b0;
+  --color-blue-rgb: 133, 165, 181;
+  --color-blue: #85a5b5;
+  --color-purple-rgb: 189, 143, 149;
+  --color-purple: #bd8f95;
+  --color-pink-rgb: 211, 169, 174;
+  --color-pink: #d3a9ae;
+
+  --text-selection: rgba(46, 64, 61, 0.8);
+  --text-highlight-bg: rgba(211, 167, 120, 0.22);
+  --bold-color: #f2ece1;
+  --italic-color: #a1d0c8;
+
+  --h1-color: #e5bd92;
+  --h2-color: #a2bfcd;
+  --h3-color: #83b8b0;
+  --h4-color: #d3a9ae;
+  --h5-color: #85a5b5;
+  --h6-color: #6e8380;
+
+  --link-color: #83b8b0;
+  --link-color-hover: #a1d0c8;
+  --link-external-color: #83b8b0;
+  --link-external-color-hover: #a1d0c8;
+  --link-unresolved-color: #bd8f95;
+
+  --code-background: #182422;
+  --code-normal: #d9d2c5;
+  --code-comment: #6e8380;
+  --code-function: #a2bfcd;
+  --code-important: #dc8a75;
+  --code-keyword: #bd8f95;
+  --code-operator: #d9d2c5;
+  --code-property: #a1d0c8;
+  --code-punctuation: #6e8380;
+  --code-string: #63a68f;
+  --code-tag: #85a5b5;
+  --code-value: #e5bd92;
+
+  --tag-color: #d3a778;
+  --tag-background: rgba(211, 167, 120, 0.12);
+  --tag-color-hover: #e5bd92;
+  --tag-background-hover: rgba(211, 167, 120, 0.2);
+
+  --blockquote-border-color: #2e403d;
+  --hr-color: #2e403d;
+  --embed-border-left: 2px solid #2e403d;
+
+  --checkbox-color: #63a68f;
+  --checkbox-color-hover: #7fc0a8;
+  --checkbox-marker-color: #101a19;
+
+  --graph-node: #83b8b0;
+  --graph-node-tag: #d3a778;
+  --graph-node-attachment: #63a68f;
+  --graph-node-unresolved: #bd8f95;
+  --graph-line: #2e403d;
+}
+
+/* daylight berg: parchment sky, teal ink */
+.theme-light {
+  color-scheme: light;
+
+  --color-base-00: #f2ece1;
+  --color-base-05: #ece5d8;
+  --color-base-10: #e8e0d4;
+  --color-base-20: #e0d8ca;
+  --color-base-25: #d9d2c5;
+  --color-base-30: #c4bcae;
+  --color-base-35: #b0a898;
+  --color-base-40: #93a5a1;
+  --color-base-50: #6e8380;
+  --color-base-60: #4f625e;
+  --color-base-70: #2e403d;
+  --color-base-100: #101a19;
+
+  --color-red-rgb: 176, 90, 72;
+  --color-red: #b05a48;
+  --color-orange-rgb: 191, 110, 88;
+  --color-orange: #bf6e58;
+  --color-yellow-rgb: 168, 118, 60;
+  --color-yellow: #a8763c;
+  --color-green-rgb: 74, 138, 116;
+  --color-green: #4a8a74;
+  --color-cyan-rgb: 79, 138, 129;
+  --color-cyan: #4f8a81;
+  --color-blue-rgb: 91, 127, 147;
+  --color-blue: #5b7f93;
+  --color-purple-rgb: 160, 106, 114;
+  --color-purple: #a06a72;
+  --color-pink-rgb: 179, 131, 138;
+  --color-pink: #b3838a;
+
+  --accent-h: 31;
+  --accent-s: 45%;
+  --accent-l: 45%;
+
+  --text-selection: rgba(46, 64, 61, 0.18);
+  --text-highlight-bg: rgba(168, 118, 60, 0.2);
+  --bold-color: #101a19;
+  --italic-color: #2e403d;
+
+  --h1-color: #a8763c;
+  --h2-color: #5b7f93;
+  --h3-color: #4f8a81;
+  --h4-color: #a06a72;
+  --h5-color: #4a8a74;
+  --h6-color: #6e8380;
+
+  --link-color: #4f8a81;
+  --link-color-hover: #2e403d;
+  --link-unresolved-color: #a06a72;
+
+  --code-background: #e8e0d4;
+  --code-normal: #2e403d;
+  --code-comment: #6e8380;
+  --code-function: #5b7f93;
+  --code-keyword: #a06a72;
+  --code-string: #4a8a74;
+  --code-value: #a8763c;
+
+  --tag-color: #a8763c;
+  --tag-background: rgba(168, 118, 60, 0.1);
+
+  --blockquote-border-color: #c4bcae;
+  --hr-color: #c4bcae;
+
+  --checkbox-color: #4a8a74;
+  --checkbox-marker-color: #f2ece1;
+
+  --graph-node: #4f8a81;
+  --graph-node-tag: #a8763c;
+  --graph-node-attachment: #4a8a74;
+  --graph-line: #c4bcae;
+}
+
+/* the cursor is the mast, same as everywhere else */
+.theme-dark .cm-content {
+  caret-color: #d3a778;
+}
+
+.theme-light .cm-content {
+  caret-color: #a8763c;
+}

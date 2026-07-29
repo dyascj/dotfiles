@@ -19,3 +19,7 @@
 # macOS noise
 .DS_Store
 **/.DS_Store
+
+# Zed local state (prompt library may contain personal text)
+.config/zed/prompts/
+.config/zed/conversations/

@@ -1,0 +1,176 @@
+/* Voltage
+ * neutral black with electric accents, plus a paper light mode
+ * same palette as the ghostty, vscode, nvim, zed, and zen setups
+ */
+
+body {
+  --accent-h: 222;
+  --accent-s: 88%;
+  --accent-l: 57%;
+}
+
+.theme-dark {
+  color-scheme: dark;
+
+  --color-base-00: #0a0a0a;
+  --color-base-05: #101010;
+  --color-base-10: #111111;
+  --color-base-20: #171717;
+  --color-base-25: #1d1d1d;
+  --color-base-30: #262626;
+  --color-base-35: #2e2e2e;
+  --color-base-40: #404040;
+  --color-base-50: #636363;
+  --color-base-60: #737373;
+  --color-base-70: #a3a3a3;
+  --color-base-100: #fafafa;
+
+  --color-red-rgb: 255, 46, 63;
+  --color-red: #ff2e3f;
+  --color-orange-rgb: 255, 133, 94;
+  --color-orange: #ff855e;
+  --color-yellow-rgb: 255, 202, 0;
+  --color-yellow: #ffca00;
+  --color-green-rgb: 13, 190, 78;
+  --color-green: #0dbe4e;
+  --color-cyan-rgb: 8, 192, 239;
+  --color-cyan: #08c0ef;
+  --color-blue-rgb: 0, 159, 255;
+  --color-blue: #009fff;
+  --color-purple-rgb: 157, 106, 251;
+  --color-purple: #9d6afb;
+  --color-pink-rgb: 225, 48, 172;
+  --color-pink: #e130ac;
+
+  --text-selection: rgba(0, 159, 255, 0.3);
+  --text-highlight-bg: rgba(255, 202, 0, 0.22);
+  --bold-color: #ffd452;
+  --italic-color: #ff678d;
+
+  --h1-color: #ff855e;
+  --h2-color: #ff855e;
+  --h3-color: #ff855e;
+  --h4-color: #ff855e;
+  --h5-color: #ff855e;
+  --h6-color: #ff855e;
+
+  --link-color: #ff678d;
+  --link-color-hover: #ff855e;
+  --link-external-color: #ff678d;
+  --link-external-color-hover: #ff855e;
+  --link-unresolved-color: #737373;
+
+  --code-background: #171717;
+  --code-normal: #fafafa;
+  --code-comment: #737373;
+  --code-function: #9d6afb;
+  --code-important: #ffab16;
+  --code-keyword: #ff678d;
+  --code-operator: #08c0ef;
+  --code-property: #ffa359;
+  --code-punctuation: #636363;
+  --code-string: #5ecc71;
+  --code-tag: #ff855e;
+  --code-value: #68cdf2;
+
+  --tag-color: #009fff;
+  --tag-background: rgba(0, 159, 255, 0.12);
+  --tag-color-hover: #68cdf2;
+  --tag-background-hover: rgba(0, 159, 255, 0.2);
+
+  --blockquote-border-color: #262626;
+  --hr-color: #262626;
+  --embed-border-left: 2px solid #262626;
+
+  --checkbox-color: #0dbe4e;
+  --checkbox-color-hover: #5ecc71;
+  --checkbox-marker-color: #0a0a0a;
+
+  --graph-node: #009fff;
+  --graph-node-tag: #ffca00;
+  --graph-node-attachment: #0dbe4e;
+  --graph-node-unresolved: #737373;
+  --graph-line: #262626;
+}
+
+/* daylight: paper white, same accents toned down */
+.theme-light {
+  color-scheme: light;
+
+  --color-base-00: #ffffff;
+  --color-base-05: #fcfcfc;
+  --color-base-10: #f7f7f7;
+  --color-base-20: #f5f5f5;
+  --color-base-25: #ededed;
+  --color-base-30: #e5e5e5;
+  --color-base-35: #d4d4d4;
+  --color-base-40: #a3a3a3;
+  --color-base-50: #8a8a8a;
+  --color-base-60: #737373;
+  --color-base-70: #525252;
+  --color-base-100: #0a0a0a;
+
+  --color-red-rgb: 213, 44, 54;
+  --color-red: #d52c36;
+  --color-orange-rgb: 213, 81, 47;
+  --color-orange: #d5512f;
+  --color-yellow-rgb: 213, 169, 16;
+  --color-yellow: #d5a910;
+  --color-green-rgb: 24, 164, 108;
+  --color-green: #18a46c;
+  --color-cyan-rgb: 28, 161, 199;
+  --color-cyan: #1ca1c7;
+  --color-blue-rgb: 26, 133, 212;
+  --color-blue: #1a85d4;
+  --color-purple-rgb: 105, 58, 207;
+  --color-purple: #693acf;
+  --color-pink-rgb: 189, 46, 144;
+  --color-pink: #bd2e90;
+
+  --accent-h: 224;
+  --accent-s: 78%;
+  --accent-l: 48%;
+
+  --text-selection: rgba(0, 159, 255, 0.18);
+  --text-highlight-bg: rgba(213, 169, 16, 0.2);
+  --bold-color: #d5a910;
+  --italic-color: #d32a61;
+
+  --h1-color: #d5512f;
+  --h2-color: #d5512f;
+  --h3-color: #d5512f;
+  --h4-color: #d5512f;
+  --h5-color: #d5512f;
+  --h6-color: #d5512f;
+
+  --link-color: #d32a61;
+  --link-color-hover: #d5512f;
+  --link-unresolved-color: #737373;
+
+  --code-background: #f5f5f5;
+  --code-normal: #0a0a0a;
+  --code-comment: #737373;
+  --code-function: #693acf;
+  --code-keyword: #d32a61;
+  --code-string: #199f43;
+  --code-value: #1ca1c7;
+
+  --tag-color: #009fff;
+  --tag-background: rgba(0, 159, 255, 0.1);
+
+  --blockquote-border-color: #e5e5e5;
+  --hr-color: #e5e5e5;
+
+  --checkbox-color: #18a46c;
+  --checkbox-marker-color: #ffffff;
+
+  --graph-node: #009fff;
+  --graph-node-tag: #d5a910;
+  --graph-node-attachment: #18a46c;
+  --graph-line: #e5e5e5;
+}
+
+.theme-dark .cm-content,
+.theme-light .cm-content {
+  caret-color: #009fff;
+}

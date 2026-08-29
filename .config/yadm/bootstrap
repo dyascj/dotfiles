@@ -53,13 +53,13 @@ fi
 
 # Link the obsidian theme into every registered vault
 OBSIDIAN_JSON="$HOME/Library/Application Support/obsidian/obsidian.json"
-OBSIDIAN_THEME="$HOME/.config/obsidian/themes/Icebergs"
+OBSIDIAN_THEME="$HOME/.config/obsidian/themes/Voltage"
 if [ -f "$OBSIDIAN_JSON" ] && [ -d "$OBSIDIAN_THEME" ]; then
     echo "==> Linking obsidian theme into vaults..."
     grep -oE '"path"[[:space:]]*:[[:space:]]*"[^"]*"' "$OBSIDIAN_JSON" | sed -E 's/.*"path"[[:space:]]*:[[:space:]]*"(.*)"/\1/' | while IFS= read -r vault; do
-        if [ -d "$vault/.obsidian" ] && [ ! -e "$vault/.obsidian/themes/Icebergs" ]; then
+        if [ -d "$vault/.obsidian" ] && [ ! -e "$vault/.obsidian/themes/Voltage" ]; then
             mkdir -p "$vault/.obsidian/themes"
-            ln -s "$OBSIDIAN_THEME" "$vault/.obsidian/themes/Icebergs"
+            ln -s "$OBSIDIAN_THEME" "$vault/.obsidian/themes/Voltage"
         fi
     done
 else

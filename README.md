@@ -2,19 +2,15 @@
 
 My macOS setup, managed with [yadm](https://yadm.io). The repo's work tree is my actual home directory, so these are real files sitting where they belong. No symlink farm to babysit, and a new machine gets dressed in one command.
 
-## Icebergs
+## Voltage
 
-I paint my own terminal palettes. The current one is **Icebergs**, pulled from Frederic Edwin Church's *The Icebergs* (1861).
+I paint my own terminal palettes. The current one is **Voltage**: a pure neutral black with electric, fully saturated accents. No tint in the greys, all the color in the signal.
 
-![Icebergs palette](.github/assets/icebergs.svg)
+![Voltage palette](.github/assets/voltage.svg)
 
-![The Icebergs by Frederic Edwin Church, 1861](.github/assets/the-icebergs-1861.jpg)
+The top row is the ANSI terminal palette, the bottom row is the syntax palette (keyword, string, number, constant, variable, function, type, text). Background is `#0a0a0a`, surfaces are `#171717`, the accent is `#009fff`, and the terminal cursor is a pale `#b4cbff`.
 
-<sup><em>The Icebergs</em>, Frederic Edwin Church, 1861. Dallas Museum of Art. Public domain.</sup>
-
-The greens are the water, the cool blues are ice in shadow, the warm neutrals are that dusk sky, and the cursor is the wood of the wrecked mast in the foreground.
-
-Ghostty reads the palette from `.config/ghostty/icebergs.conf`. VS Code gets the same colors through `workbench.colorCustomizations` in `settings.json`, layered over a translucent window (vscode-vibrancy). Neovim runs its own build of the theme, a single-file colorscheme at `.config/nvim/colors/icebergs.lua` with full treesitter and diagnostic highlights, and it keeps a transparent background so the terminal blur shows through. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, and Obsidian gets a full theme (plus a parchment light mode) in `.config/obsidian/themes/Icebergs/`. One palette, five surfaces.
+Ghostty reads the palette from `.config/ghostty/voltage.conf`. VS Code gets the same colors through `workbench.colorCustomizations` in `settings.json`, layered over a translucent window (vscode-vibrancy). Neovim runs its own build of the theme, a single-file colorscheme at `.config/nvim/colors/voltage.lua` with full treesitter and diagnostic highlights, and it keeps a transparent background so the terminal blur shows through. Zed has a full theme at `.config/zed/themes/voltage.json`. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, Obsidian gets a full theme (plus a paper light mode) in `.config/obsidian/themes/Voltage/`, and btop has a transparent variant in `.config/btop/themes/`. One palette, seven surfaces.
 
 ## What's inside
 
@@ -24,9 +20,10 @@ Ghostty reads the palette from `.config/ghostty/icebergs.conf`. VS Code gets the
 | VS Code | `Library/Application Support/Code/User/settings.json` |
 | zsh | `.zshrc`, `.zprofile` |
 | [powerlevel10k](https://github.com/romkatv/powerlevel10k) | `.p10k.zsh` |
-| Neovim | `.config/nvim/` ([LazyVim](https://www.lazyvim.org)) |
+| Neovim | `.config/nvim/` |
+| [Zed](https://zed.dev) | `.config/zed/` |
 | [Zen Browser](https://zen-browser.app) | `.config/zen/chrome/userChrome.css` |
-| [Obsidian](https://obsidian.md) | `.config/obsidian/themes/Icebergs/` |
+| [Obsidian](https://obsidian.md) | `.config/obsidian/themes/Voltage/` |
 | btop | `.config/btop/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
@@ -49,7 +46,7 @@ yadm is just git with your home directory as the work tree, so the muscle memory
 
 ```sh
 yadm status
-yadm add .config/ghostty/icebergs.conf
+yadm add .config/ghostty/voltage.conf
 yadm commit -m "warmer cursor"
 yadm push
 ```

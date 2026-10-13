@@ -1,2 +1,33 @@
-config-file = voltage.conf
-font-family = Hack Nerd Font
+########################################
+# Ghostty, dressed like my T3 Code glass build:
+# black glass, hairline chrome, SF Mono, tabs in the title bar
+########################################
+
+config-file = ash.conf
+
+# type
+font-family = SF Mono
+font-size = 13
+adjust-cell-height = 15%
+
+# window
+macos-titlebar-style = tabs
+window-padding-x = 16
+window-padding-y = 12
+window-padding-balance = true
+window-colorspace = display-p3
+window-save-state = always
+
+# dock icon in the same black and grey
+macos-icon = custom-style
+macos-icon-frame = chrome
+macos-icon-ghost-color = #e6e6e6
+macos-icon-screen-color = #000000
+
+# splits
+unfocused-split-opacity = 0.85
+
+# cursor and mouse
+cursor-style = bar
+cursor-style-blink = false
+mouse-hide-while-typing = true

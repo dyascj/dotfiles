@@ -2,15 +2,17 @@
 
 My macOS setup, managed with [yadm](https://yadm.io). The repo's work tree is my actual home directory, so these are real files sitting where they belong. No symlink farm to babysit, and a new machine gets dressed in one command.
 
-## Voltage
+## Ash
 
-I paint my own terminal palettes. The current one is **Voltage**: a pure neutral black with electric, fully saturated accents. No tint in the greys, all the color in the signal.
+I paint my own terminal palettes. The current one is **Ash**: black glass, a plain grey ramp, and pastel color only where it carries meaning. It replaced Voltage, which was louder than it needed to be.
 
-![Voltage palette](.github/assets/voltage.svg)
+![Ash palette](.github/assets/ash.svg)
 
-The top row is the ANSI terminal palette, the bottom row is the syntax palette (keyword, string, number, constant, variable, function, type, text). Background is `#0a0a0a`, surfaces are `#171717`, the accent is `#009fff`, and the terminal cursor is a pale `#b4cbff`.
+The top row is the grey ramp, from the black glass up to the text color. The bottom row is the pastels: rose, peach, butter, mint, aqua, sky, lilac, plus pure white. Hover and selection are white washes (5% and 10%), borders are 7% white hairlines, and sky `#a6c8f4` is the one accent.
 
-Ghostty reads the palette from `.config/ghostty/voltage.conf`. VS Code gets the same colors through `workbench.colorCustomizations` in `settings.json`, layered over a translucent window (vscode-vibrancy). Neovim runs its own build of the theme, a single-file colorscheme at `.config/nvim/colors/voltage.lua` with full treesitter and diagnostic highlights, and it keeps a transparent background so the terminal blur shows through. Zed has a full theme at `.config/zed/themes/voltage.json`. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, Obsidian gets a full theme (plus a paper light mode) in `.config/obsidian/themes/Voltage/`, and btop has a transparent variant in `.config/btop/themes/`. One palette, seven surfaces.
+It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy so the whole window is translucent black, with the acrylic url bar and compact sidebar floating over it.
+
+Zed (`.config/zed/themes/voltage.json`), VS Code (`workbench.colorCustomizations` in `settings.json`), and btop (`.config/btop/themes/voltage.theme`) still wear Voltage until they get ported.
 
 ## What's inside
 
@@ -20,10 +22,8 @@ Ghostty reads the palette from `.config/ghostty/voltage.conf`. VS Code gets the 
 | VS Code | `Library/Application Support/Code/User/settings.json` |
 | zsh | `.zshrc`, `.zprofile` |
 | [powerlevel10k](https://github.com/romkatv/powerlevel10k) | `.p10k.zsh` |
-| Neovim | `.config/nvim/` |
 | [Zed](https://zed.dev) | `.config/zed/` |
 | [Zen Browser](https://zen-browser.app) | `.config/zen/chrome/userChrome.css` |
-| [Obsidian](https://obsidian.md) | `.config/obsidian/themes/Voltage/` |
 | btop | `.config/btop/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
@@ -36,9 +36,9 @@ yadm clone https://github.com/dyascj/dotfiles.git
 yadm bootstrap
 ```
 
-`yadm clone` puts every file where it belongs. The [bootstrap script](.config/yadm/bootstrap) handles the rest: installs Homebrew if it's missing, runs `brew bundle --global` for everything in the Brewfile, installs my VS Code extensions from a saved list, and sets zsh as the default shell.
+`yadm clone` puts every file where it belongs. The [bootstrap script](.config/yadm/bootstrap) handles the rest: installs Homebrew if it's missing, runs `brew bundle --global` for everything in the Brewfile, copies SF Mono out of Terminal.app so Ghostty can use it, installs my VS Code extensions from a saved list, and sets zsh as the default shell.
 
-Zen and Obsidian hide their config behind machine-specific folder names (a random profile hash, per-vault settings), so those two are the exception to the no-symlinks rule: bootstrap finds the active Zen profile and every registered Obsidian vault, then links the theme files in from `.config`. Run `yadm bootstrap` again after the first launch of either app and it wires them up.
+Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Run `yadm bootstrap` again after Zen's first launch and it wires everything up.
 
 ## Day to day
 
@@ -46,7 +46,7 @@ yadm is just git with your home directory as the work tree, so the muscle memory
 
 ```sh
 yadm status
-yadm add .config/ghostty/voltage.conf
+yadm add .config/ghostty/ash.conf
 yadm commit -m "warmer cursor"
 yadm push
 ```

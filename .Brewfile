@@ -8,7 +8,6 @@ brew "eza"
 brew "starship"
 
 # Dev tools
-brew "neovim"
 brew "vim"
 brew "lazygit"
 brew "gh"

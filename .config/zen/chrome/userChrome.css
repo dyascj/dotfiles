@@ -4,14 +4,14 @@
  *
  * Zen is natively transparent on macOS. Bootstrap swaps its heavy hudWindow
  * material for the much clearer fullScreenUI, which reads pale grey on its
- * own, so this sheet lays a 70% black wash over it. That lands about where
- * T3's black glass does (a 66% tint over an untinted blur).
+ * own, so this sheet lays a 65% black wash over it, a touch darker than
+ * T3's black glass (a 66% tint over an untinted blur).
  * Hover and selection are white washes (5% and 10%), borders are 7%
  * white hairlines, and color only shows up where it means something.
  */
 
 :root {
-  --ash-glass: rgba(0, 0, 0, 0.7);
+  --ash-glass: rgba(0, 0, 0, 0.65);
   --ash-float: rgba(10, 10, 10, 0.86);
   --ash-panel: rgba(14, 14, 14, 0.94);
   --ash-line: rgba(255, 255, 255, 0.07);
@@ -32,16 +32,25 @@
   --ash-lilac: #c8b4f0;
 }
 
-/* window: one black tint over the desktop blur. The -old and -toolbar
-   variants are what Zen fades between when workspaces switch. */
-:root,
-#main-window {
+/* window: one black tint over the desktop blur. Zen writes its workspace
+   gradient inline on these two elements, so the override has to land on
+   them, not :root. #zen-browser-background is the whole window;
+   #zen-toolbar-background is the floating sidebar in compact mode. The
+   -old variants are what Zen fades from when workspaces switch. */
+.zen-browser-generic-background {
   --zen-main-browser-background: var(--ash-glass) !important;
   --zen-main-browser-background-toolbar: var(--ash-glass) !important;
   --zen-main-browser-background-old: var(--ash-glass) !important;
   --zen-main-browser-background-toolbar-old: var(--ash-glass) !important;
   --zen-background-opacity: 1 !important;
+}
 
+.zen-browser-grain {
+  display: none !important;
+}
+
+:root,
+#main-window {
   --toolbar-color-scheme: dark !important;
   --toolbox-textcolor: var(--ash-fg) !important;
   --toolbar-color: var(--ash-fg) !important;

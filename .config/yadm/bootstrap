@@ -12,7 +12,8 @@ fi
 
 # Install packages from Brewfile
 echo "==> Installing Homebrew packages..."
-brew bundle --global
+# One failed package shouldn't stop the rest of the setup
+brew bundle --global || echo "==> Some Homebrew packages failed, rerun 'brew bundle --global' later"
 
 # Ghostty uses SF Mono, which macOS only ships inside Terminal.app
 SF_MONO_SRC="/System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts"
@@ -67,6 +68,32 @@ PREFS
     fi
 else
     echo "==> Skipping zen theme (no profile yet, rerun bootstrap after first launch)"
+fi
+
+# T3 Code glass build: clone the fork and link its updater. The build takes
+# a few minutes, so it's left for `t3-glass-update` to run by hand.
+T3_REPO="$HOME/Developer/t3code-glass"
+if [ ! -d "$T3_REPO" ]; then
+    echo "==> Cloning the T3 Code glass fork..."
+    if git clone -q -b glass https://github.com/dyascj/t3code.git "$T3_REPO"; then
+        git -C "$T3_REPO" remote add upstream https://github.com/pingdotgg/t3code.git
+    else
+        echo "==> Couldn't clone the T3 fork, skipping"
+    fi
+fi
+if [ -d "$T3_REPO" ]; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$T3_REPO/scripts/glass-update.sh" "$HOME/.local/bin/t3-glass-update"
+    # T3's native resource monitor builds with a private Rust toolchain, so
+    # Homebrew's Rust never has to change for it
+    T3_RUST="$HOME/.t3-glass-rust"
+    if [ ! -x "$T3_RUST/cargo/bin/cargo" ]; then
+        echo "==> Installing T3's private Rust toolchain..."
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+            RUSTUP_HOME="$T3_RUST/rustup" CARGO_HOME="$T3_RUST/cargo" sh -s -- -y --no-modify-path >/dev/null ||
+            echo "==> Rust toolchain install failed, rerun bootstrap later"
+    fi
+    echo "==> Run t3-glass-update to build and install T3 Code (glass)"
 fi
 
 echo "==> Bootstrap complete!"

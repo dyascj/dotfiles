@@ -1,9 +1,11 @@
 [user]
 	name = Charles Dyas
-	email = dyascj@gmail.com
+	email = 80225316+dyascj@users.noreply.github.com
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials

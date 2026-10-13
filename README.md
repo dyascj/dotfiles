@@ -24,6 +24,7 @@ Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS 
 | [powerlevel10k](https://github.com/romkatv/powerlevel10k) | `.p10k.zsh` |
 | [Zed](https://zed.dev) | `.config/zed/` |
 | [Zen Browser](https://zen-browser.app) | `.config/zen/chrome/userChrome.css` |
+| [T3 Code](https://github.com/dyascj/t3code/tree/glass) (glass fork) | cloned by bootstrap |
 | btop | `.config/btop/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
@@ -31,14 +32,22 @@ Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS 
 ## New machine
 
 ```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install yadm
 yadm clone https://github.com/dyascj/dotfiles.git
 yadm bootstrap
 ```
 
-`yadm clone` puts every file where it belongs. The [bootstrap script](.config/yadm/bootstrap) handles the rest: installs Homebrew if it's missing, runs `brew bundle --global` for everything in the Brewfile, copies SF Mono out of Terminal.app so Ghostty can use it, installs my VS Code extensions from a saved list, and sets zsh as the default shell.
+Homebrew comes first because yadm installs through it. `yadm clone` puts every file where it belongs, and the [bootstrap script](.config/yadm/bootstrap) handles the rest:
 
-Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Run `yadm bootstrap` again after Zen's first launch and it wires everything up.
+- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, AeroSpace, Sol). A failed package gets reported and the setup keeps going.
+- Copies SF Mono out of Terminal.app so Ghostty can use it.
+- Installs my VS Code extensions from a saved list.
+- Clones my [T3 Code glass fork](https://github.com/dyascj/t3code/tree/glass) into `~/Developer/t3code-glass`, links `t3-glass-update` into `~/.local/bin`, and sets up the private Rust toolchain it builds with. Run `t3-glass-update` afterwards to build and install the app (it takes a few minutes).
+- Sets zsh as the default shell.
+
+Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Zen has no profile until it's opened once, so launch it, quit it, and run `yadm bootstrap` again to wire it up. Every step skips what's already done, so rerunning is safe.
 
 ## Day to day
 

@@ -4,14 +4,14 @@
  *
  * Zen is natively transparent on macOS. Bootstrap swaps its heavy hudWindow
  * material for the much clearer fullScreenUI, which reads pale grey on its
- * own, so this sheet lays a 65% black wash over it, a touch darker than
+ * own, so this sheet lays a 55% black wash over it, a touch lighter than
  * T3's black glass (a 66% tint over an untinted blur).
  * Hover and selection are white washes (5% and 10%), borders are 7%
  * white hairlines, and color only shows up where it means something.
  */
 
 :root {
-  --ash-glass: rgba(0, 0, 0, 0.65);
+  --ash-glass: rgba(0, 0, 0, 0.55);
   --ash-float: rgba(10, 10, 10, 0.86);
   --ash-panel: rgba(14, 14, 14, 0.94);
   --ash-line: rgba(255, 255, 255, 0.07);

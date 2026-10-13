@@ -2,14 +2,15 @@
  * black glass, grey ramp, pastel pops
  * matches the T3 Code glass build and ghostty
  *
- * Zen is natively transparent on macOS, so the window just paints a
- * translucent black and WindowServer blurs the desktop behind it.
+ * Zen is natively transparent on macOS. Bootstrap swaps its heavy hudWindow
+ * material for the much clearer fullScreenUI, so this sheet only lays a 40%
+ * black wash over the blur, the same base tint T3 uses.
  * Hover and selection are white washes (5% and 10%), borders are 7%
  * white hairlines, and color only shows up where it means something.
  */
 
 :root {
-  --ash-glass: rgba(0, 0, 0, 0.72);
+  --ash-glass: rgba(0, 0, 0, 0.4);
   --ash-float: rgba(10, 10, 10, 0.86);
   --ash-panel: rgba(14, 14, 14, 0.94);
   --ash-line: rgba(255, 255, 255, 0.07);
@@ -45,6 +46,7 @@
   --toolbar-color: var(--ash-fg) !important;
   --lwt-text-color: var(--ash-fg) !important;
   --toolbar-bgcolor: transparent !important;
+  --toolbar-background-color: transparent !important;
 
   --zen-primary-color: var(--ash-sky) !important;
   --zen-colors-primary: var(--ash-select) !important;

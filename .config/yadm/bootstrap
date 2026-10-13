@@ -48,14 +48,22 @@ if [ -f "$ZEN_DIR/profiles.ini" ] && [ -f "$ZEN_CSS" ]; then
         echo "==> Linking zen userChrome into $ZEN_PROFILE..."
         mkdir -p "$ZEN_DIR/$ZEN_PROFILE/chrome"
         ln -sf "$ZEN_CSS" "$ZEN_DIR/$ZEN_PROFILE/chrome/userChrome.css"
-        # userChrome.css only loads with the first pref; the acrylic ones blur
-        # the floating url bar and compact sidebar like T3's floating glass
+        # userChrome.css only loads with the first pref. The rest make Zen's
+        # glass read like T3's: acrylic url bar and compact sidebar, the clear
+        # fullScreenUI material (2) instead of the heavy hudWindow (1), and no
+        # greying out when the window loses focus.
         ZEN_USERJS="$ZEN_DIR/$ZEN_PROFILE/user.js"
-        for pref in toolkit.legacyUserProfileCustomizations.stylesheets zen.theme.acrylic-urlbar zen.theme.acrylic-sidebar; do
-            if ! grep -q "\"$pref\"" "$ZEN_USERJS" 2>/dev/null; then
-                echo "user_pref(\"$pref\", true);" >> "$ZEN_USERJS"
-            fi
-        done
+        while read -r pref value; do
+            touch "$ZEN_USERJS"
+            sed -i '' "/\"$pref\"/d" "$ZEN_USERJS"
+            echo "user_pref(\"$pref\", $value);" >> "$ZEN_USERJS"
+        done <<'PREFS'
+toolkit.legacyUserProfileCustomizations.stylesheets true
+zen.theme.acrylic-urlbar true
+zen.theme.acrylic-sidebar true
+zen.widget.macos.window-material 2
+zen.view.grey-out-inactive-windows false
+PREFS
     fi
 else
     echo "==> Skipping zen theme (no profile yet, rerun bootstrap after first launch)"

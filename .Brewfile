@@ -1,5 +1,6 @@
 tap "nikitabobko/tap"
 tap "anomalyco/tap"
+tap "FelixKratz/formulae"
 
 # Shell & terminal
 brew "powerlevel10k"
@@ -51,6 +52,7 @@ brew "btop"
 brew "neofetch"
 brew "coreutils"
 brew "osx-cpu-temp"
+brew "sketchybar"
 brew "defaultbrowser"
 brew "duti"
 
@@ -67,7 +69,11 @@ cask "codex"
 cask "nikitabobko/tap/aerospace"
 cask "sol"
 cask "stats"
+# Skipped when already installed outside Homebrew, so bundle doesn't trip over them
+cask "tailscale-app" unless File.exist?("/Applications/Tailscale.app")
+cask "vorssaint" unless File.exist?("/Applications/Vorssaint.app")
 cask "tiled"
 
 # Fonts
 cask "font-hack-nerd-font"
+cask "font-sketchybar-app-font"

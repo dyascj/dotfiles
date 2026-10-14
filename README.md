@@ -12,7 +12,31 @@ The top row is the grey ramp, from the black glass up to the text color. The bot
 
 It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy on the clear fullScreenUI material with a 55% black wash on top, a touch lighter than T3's black glass. The acrylic url bar and compact sidebar float over it.
 
-Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs. One palette, five surfaces.
+Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs.
+
+The menu bar is [SketchyBar](https://github.com/FelixKratz/SketchyBar), in `.config/sketchybar/`. It floats as a strip of black glass with a 7% hairline, everything grey until it's active, then white. On the left sit the Spaces that are in use, each with icons for the apps open in it, and the app in front. On the right are Vorssaint, Tailscale, CPU, volume, battery, a Control Center and the clock. The only color is rose on the battery when it's low and unplugged.
+
+The Apple logo, Tailscale and Control Center open popup menus in the same black glass, with rows that light up under the mouse. The Apple menu does what the real one does. Tailscale's switches the connection, copies the IP of this Mac or any of my devices, and turns the exit node on with Tailscale's suggestion or off again. Control Center mirrors the stock one: Wi-Fi, Bluetooth, AirDrop, Focus, Dark Mode, Screen Mirroring and Capture Screen, brightness and volume sliders, every sound output with AirPods battery and a tap to connect them, and what's playing. macOS has no command line for half of that, so `.config/sketchybar/helpers/ccctl.swift` does it, built into `~/.cache` the first time the bar starts. Focus runs a Shortcut named Toggle Focus. AirPods noise control isn't something macOS lets anything but its own Control Center change. Vorssaint's icon opens its own panel. That clicks the hidden menu bar icon, so sketchybar needs Accessibility in System Settings. Force Quit uses the real shortcut for the same reason, and falls back to Activity Monitor without it. The bar sits above the real menu bar, so it still slides down at the top edge but never covers the bar. One palette, six surfaces.
+
+## Tiling
+
+Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps that line up with the bar. New windows smart stack: each one splits the window it opened next to, turning the split the other way each time, so they spiral into a grid instead of piling into thin strips. Free mode floats every window so it moves like stock macOS, and switching back snaps them into the grid again. Workspaces work the same in both.
+
+Everything is a click away on the bar. Click a workspace to go there, right-click it to send the window you're in. The grid icon beside the workspaces opens a menu with free mode and the window commands, each showing its shortcut:
+
+| Keys | Does |
+| --- | --- |
+| ⌥1 to ⌥5 | Go to a workspace |
+| ⌥⇧1 to ⌥⇧5 | Send the window there |
+| ⌥⇥ | Back to the last workspace |
+| ⌥T | Tiling or free mode |
+| ⌥F | Float or tile one window |
+| ⌥↩ | Fullscreen |
+| ⌥/ | Flip the layout |
+| ⌥= | Tidy up: smart stack and even out sizes |
+| ⌃⌥ arrows | Move the window |
+
+Option alone with the arrows is left for jumping by word in text.
 
 ## What's inside
 
@@ -26,6 +50,8 @@ Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS 
 | [Zen Browser](https://zen-browser.app) | `.config/zen/chrome/userChrome.css` |
 | [T3 Code](https://github.com/dyascj/t3code/tree/glass) (glass fork) | cloned by bootstrap |
 | btop | `.config/btop/` |
+| [AeroSpace](https://github.com/nikitabobko/AeroSpace) | `.config/aerospace/` |
+| [SketchyBar](https://github.com/FelixKratz/SketchyBar) | `.config/sketchybar/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
 
@@ -41,11 +67,20 @@ yadm bootstrap
 
 Homebrew comes first because yadm installs through it. `yadm clone` puts every file where it belongs, and the [bootstrap script](.config/yadm/bootstrap) handles the rest:
 
-- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, AeroSpace, Sol). A failed package gets reported and the setup keeps going.
+- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, AeroSpace, Sol, Tailscale, Vorssaint). A failed package gets reported and the setup keeps going.
 - Copies SF Mono out of Terminal.app so Ghostty can use it.
 - Installs my VS Code extensions from a saved list.
 - Clones my [T3 Code glass fork](https://github.com/dyascj/t3code/tree/glass) into `~/Developer/t3code-glass`, links `t3-glass-update` into `~/.local/bin`, and sets up the private Rust toolchain it builds with. Run `t3-glass-update` afterwards to build and install the app (it takes a few minutes).
 - Sets zsh as the default shell.
+- Hides the macOS menu bar and starts SketchyBar in its place. Its first start builds the Control Center helper from source.
+- Starts AeroSpace, which starts itself at every login after that.
+
+A few things only macOS can say yes to, so they wait for me after bootstrap:
+
+- **Privacy & Security > Accessibility:** turn on AeroSpace, or nothing tiles. Turn on `sketchybar` too, for Vorssaint's panel and the real Force Quit window.
+- **Prompts on first use:** let `ccctl` use Bluetooth (AirPods in Control Center) and let SketchyBar control System Events (Dark Mode).
+- **Shortcuts:** make one called Toggle Focus with a Set Focus action that toggles Do Not Disturb, for the Focus switch.
+- **Tailscale:** sign in.
 
 Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Zen has no profile until it's opened once, so launch it, quit it, and run `yadm bootstrap` again to wire it up. Every step skips what's already done, so rerunning is safe.
 

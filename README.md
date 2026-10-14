@@ -66,8 +66,6 @@ Option alone with the arrows is left for jumping by word in text.
 
 The focused window wears a soft white line from [JankyBorders](https://github.com/FelixKratz/JankyBorders) (`.config/borders/bordersrc`), so it's clear which window the next one will split.
 
-The MX Master's gesture button switches workspaces: hold it and swipe left or right. Logi Options+ sends ⌃⌘⌥← and ⌃⌘⌥→, which AeroSpace turns into previous and next, wrapping around from 5 back to 1. Options+ keeps its button settings in its own app, so on a new Mac that part is set by hand (below).
-
 My Keychron has no right Option key, so right Control stands in for it. A LaunchAgent in `Library/LaunchAgents/local.keyboard.right-option.plist` remaps it with `hidutil` at every login. The Mac's own keyboards have no right Control, so they're untouched.
 
 ## What's inside
@@ -113,7 +111,6 @@ A few things only macOS can say yes to, so they wait for me after bootstrap:
 - **Prompts on first use:** let `ccctl` use Bluetooth (AirPods in Control Center) and let SketchyBar control System Events (Dark Mode).
 - **Shortcuts:** make one called Toggle Focus with a Set Focus action that toggles Do Not Disturb, for the Focus switch.
 - **Tailscale:** sign in.
-- **Logi Options+:** on the MX Master's gesture button, set swipe left to the keystroke ⌃⌥⌘← and swipe right to ⌃⌥⌘→.
 
 Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Zen has no profile until it's opened once, so launch it, quit it, and run `yadm bootstrap` again to wire it up. Every step skips what's already done, so rerunning is safe.
 

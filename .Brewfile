@@ -71,7 +71,6 @@ cask "codex"
 cask "nikitabobko/tap/aerospace"
 cask "sol"
 cask "stats"
-cask "logi-options+"
 # Skipped when already installed outside Homebrew, so bundle doesn't trip over them
 cask "tailscale-app" unless File.exist?("/Applications/Tailscale.app")
 cask "vorssaint" unless File.exist?("/Applications/Vorssaint.app")

@@ -105,6 +105,13 @@ if command -v sketchybar &>/dev/null; then
     brew services start sketchybar >/dev/null || echo "==> sketchybar didn't start, run 'brew services start sketchybar'"
 fi
 
+# Right Control acts as right Option, for keyboards without one. It runs at every login.
+KEYMAP="$HOME/Library/LaunchAgents/local.keyboard.right-option.plist"
+if [ -f "$KEYMAP" ]; then
+    echo "==> Turning right Control into right Option..."
+    launchctl bootstrap "gui/$(id -u)" "$KEYMAP" 2>/dev/null || launchctl kickstart "gui/$(id -u)/local.keyboard.right-option" || true
+fi
+
 # AeroSpace starts itself at login after this. It needs Accessibility before it works.
 if [ -d /Applications/AeroSpace.app ]; then
     echo "==> Starting AeroSpace (allow it in Privacy & Security > Accessibility)..."

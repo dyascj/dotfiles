@@ -25,8 +25,12 @@ OFF=󰨙
 case "$NAME:$SENDER" in
   cc.volume:mouse.clicked) osascript -e "set volume output volume $PERCENTAGE"; exit 0 ;;
   cc.volume:volume_change) sketchybar --set cc.volume slider.percentage="$INFO" --set cc.sound label="$INFO%"; exit 0 ;;
-  cc.brightness:brightness_change) sketchybar --set cc.brightness slider.percentage="$INFO" --set cc.display label="$INFO%"; exit 0 ;;
-  cc.brightness:mouse.clicked) "$CCCTL" brightness "$PERCENTAGE"; sketchybar --set cc.display label="$PERCENTAGE%"; exit 0 ;;
+  # Slider n drives the nth display ccctl lists, the same order the rows were filled in
+  cc.brightness*:mouse.clicked)
+    n=${NAME#cc.brightness}
+    "$CCCTL" brightness "$("$CCCTL" displays | sed -n "${n}p" | cut -f1)" "$PERCENTAGE"
+    sketchybar --set "cc.display$n" label="$PERCENTAGE%"
+    exit 0 ;;
 esac
 
 close="menu_close control_center"
@@ -78,7 +82,7 @@ networksetup -getairportpower "$(wifi_dev)" >"$tmp/wifi" &
 "$CCCTL" bluetooth >"$tmp/bluetooth" &
 "$CCCTL" airdrop >"$tmp/airdrop" &
 shortcuts list >"$tmp/shortcuts" &
-"$CCCTL" brightness >"$tmp/brightness" 2>/dev/null &
+"$CCCTL" displays >"$tmp/displays" 2>/dev/null &
 osascript -e 'output volume of (get volume settings)' >"$tmp/volume" &
 "$CCCTL" outputs >"$tmp/outputs" &
 "$CCCTL" airpods >"$tmp/airpods" &
@@ -107,12 +111,20 @@ else
   args+=(--set cc.focus icon.color=$DIM label="Set up" label.color=$DIM label.font="SF Mono:Medium:12.0")
 fi
 
-brightness=$(cat "$tmp/brightness")
-if [ -n "$brightness" ]; then
-  args+=(--set cc.display label="$brightness%" --set cc.brightness drawing=on slider.percentage="$brightness")
-else
-  args+=(--set cc.display label="-" --set cc.brightness drawing=off) # a display that can't be dimmed
-fi
+# One labeled slider per display. One that can't be dimmed from here (a
+# third-party monitor, which needs DDC) keeps its name but gets no slider.
+for n in 1 2 3; do
+  IFS=$'\t' read -r _ name level < <(sed -n "${n}p" "$tmp/displays")
+  name=${name/ Retina/} # "Built-in Retina Display" is too long for the row
+  if [ -z "$name" ]; then
+    args+=(--set "cc.display$n" drawing=off --set "cc.brightness$n" drawing=off)
+  elif [ "$level" = - ]; then
+    args+=(--set "cc.display$n" drawing=on icon="$name" label="Fixed" --set "cc.brightness$n" drawing=off)
+  else
+    args+=(--set "cc.display$n" drawing=on icon="$name" label="$level%"
+      --set "cc.brightness$n" drawing=on slider.percentage="$level")
+  fi
+done
 volume=$(cat "$tmp/volume")
 args+=(--set cc.sound label="$volume%" --set cc.volume slider.percentage="$volume")
 

@@ -7,6 +7,7 @@
 import Foundation
 import CoreAudio
 import CoreGraphics
+import AppKit
 import IOBluetooth
 
 func fail(_ msg: String) -> Never {
@@ -24,26 +25,47 @@ func kv(_ o: NSObject, _ key: String) -> Int { (o.value(forKey: key) as? NSNumbe
 
 // MARK: brightness (DisplayServices)
 
+// Apple displays (built-in, Studio Display, Pro Display XDR) dim through
+// DisplayServices. Third-party monitors need DDC, so they list without a level.
 let ds = "/System/Library/PrivateFrameworks/DisplayServices.framework/DisplayServices"
 
-// The laptop screen when it's open, otherwise the main display (a Studio Display, say)
-func targetDisplay() -> CGDirectDisplayID {
+func onlineDisplays() -> [CGDirectDisplayID] {
     var ids = [CGDirectDisplayID](repeating: 0, count: 16), n: UInt32 = 0
     CGGetOnlineDisplayList(16, &ids, &n)
-    return ids.prefix(Int(n)).first(where: { CGDisplayIsBuiltin($0) != 0 }) ?? CGMainDisplayID()
+    return Array(ids.prefix(Int(n)))
+}
+
+func readBrightness(_ id: CGDirectDisplayID) -> Int? {
+    let get = sym(ds, "DisplayServicesGetBrightness", (@convention(c) (CGDirectDisplayID, UnsafeMutablePointer<Float>) -> Int32).self)
+    var b: Float = 0
+    return get(id, &b) == 0 ? Int((b * 100).rounded()) : nil
+}
+
+// One line per display: id, name, brightness 0-100 or "-" when it can't be dimmed
+func displays() {
+    var names: [CGDirectDisplayID: String] = [:]
+    for screen in NSScreen.screens {
+        if let id = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID {
+            names[id] = screen.localizedName
+        }
+    }
+    for id in onlineDisplays() {
+        let name = names[id] ?? (CGDisplayIsBuiltin(id) != 0 ? "Built-in Display" : "Display")
+        print([String(id), name, readBrightness(id).map(String.init) ?? "-"].joined(separator: "\t"))
+    }
 }
 
 func brightness(_ args: [String]) {
-    let id = targetDisplay()
-    if let s = args.first {
-        guard let v = Float(s), (0...100).contains(v) else { fail("brightness must be 0-100") }
+    guard let first = args.first, let id = CGDirectDisplayID(first), onlineDisplays().contains(id) else {
+        fail("usage: ccctl brightness <display id> [0-100] (ids from ccctl displays)")
+    }
+    if args.count > 1 {
+        guard let v = Float(args[1]), (0...100).contains(v) else { fail("brightness must be 0-100") }
         let set = sym(ds, "DisplayServicesSetBrightness", (@convention(c) (CGDirectDisplayID, Float) -> Int32).self)
-        if set(id, v / 100) != 0 { fail("DisplayServicesSetBrightness failed") }
+        if set(id, v / 100) != 0 { fail("this display can't be dimmed from here") }
     } else {
-        let get = sym(ds, "DisplayServicesGetBrightness", (@convention(c) (CGDirectDisplayID, UnsafeMutablePointer<Float>) -> Int32).self)
-        var b: Float = 0
-        if get(id, &b) != 0 { fail("this display doesn't report its brightness") }
-        print(Int((b * 100).rounded()))
+        guard let level = readBrightness(id) else { fail("this display doesn't report its brightness") }
+        print(level)
     }
 }
 
@@ -227,6 +249,7 @@ func disclaimAndRerun() {
 
 let args = Array(CommandLine.arguments.dropFirst())
 switch args.first {
+case "displays": displays()
 case "brightness": brightness(Array(args.dropFirst()))
 case "outputs": outputs()
 case "output" where args.count == 2: setOutput(args[1])
@@ -243,5 +266,5 @@ case "airdrop": airdrop(Array(args.dropFirst()))
 case "nowplaying": nowPlaying()
 case "media": media(Array(args.dropFirst()))
 default:
-    fail("usage: ccctl brightness [0-100] | outputs | output <uid> | airpods | bluetooth [on|off|toggle] | connect <addr> | airdrop [off|contacts|everyone] | nowplaying | media play|pause|toggle|next|previous")
+    fail("usage: ccctl displays | brightness <display id> [0-100] | outputs | output <uid> | airpods | bluetooth [on|off|toggle] | connect <addr> | airdrop [off|contacts|everyone] | nowplaying | media play|pause|toggle|next|previous")
 }

@@ -136,9 +136,13 @@ slider() { # name
       slider.background.color=0x26ffffff slider.highlight_color=$TEXT \
       slider.knob.drawing=off background.height=20 script="$cc"
 }
-menu_label control_center cc.display "Display"
-slider cc.brightness
-sketchybar --subscribe cc.brightness mouse.clicked brightness_change
+# A brightness slider per display, for up to three; unused rows stay hidden
+for n in 1 2 3; do
+  menu_label control_center cc.display$n "Display"
+  slider cc.brightness$n
+  sketchybar --set cc.display$n drawing=off --set cc.brightness$n drawing=off \
+    --subscribe cc.brightness$n mouse.clicked
+done
 menu_label control_center cc.sound "Sound"
 slider cc.volume
 sketchybar --subscribe cc.volume mouse.clicked volume_change

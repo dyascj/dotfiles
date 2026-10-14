@@ -20,21 +20,45 @@ The Apple logo, Tailscale and Control Center open popup menus in the same black 
 
 ## Tiling
 
-Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps that line up with the bar. New windows smart stack: each one splits the window it opened next to, turning the split the other way each time, so they spiral into a grid instead of piling into thin strips. Free mode floats every window so it moves like stock macOS, and switching back snaps them into the grid again. Workspaces work the same in both.
+Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps that line up with the bar. The config lives in `.config/aerospace/aerospace.toml`, and the smart stacking and free mode behind it in `.config/aerospace/mode.sh`.
 
-Everything is a click away on the bar. Click a workspace to go there, right-click it to send the window you're in. The grid icon beside the workspaces opens a menu with free mode and the window commands, each showing its shortcut:
+### Smart stacking
 
-| Keys | Does |
+A new window splits the window you're in, and each split turns the other way from the last. Windows spiral into a grid instead of piling into thin strips:
+
+```
+1 window      2 windows      3 windows       4 windows
+┌───────┐     ┌───┬───┐      ┌───┬───┐       ┌───┬───┐
+│       │     │   │   │      │   │ 2 │       │   │ 2 │
+│   1   │     │ 1 │ 2 │      │ 1 ├───┤       │ 1 ├─┬─┤
+│       │     │   │   │      │   │ 3 │       │   │3│4│
+└───────┘     └───┴───┘      └───┴───┘       └───┴─┴─┘
+```
+
+- **Pick where it lands.** The new window splits whichever window is focused, so click the one it should share space with before opening it. Open from 1 instead of 3 above and you get a 2x2 grid.
+- **Tidy up** (⌥= or the layout menu) rebuilds the workspace you're on into the spiral and evens out the sizes. Use it when a workspace gets messy, or after dragging windows in from another one.
+- **Flip** (⌥/) turns a split sideways when a pair would read better stacked, or side by side.
+- **Two to four windows** per workspace is the sweet spot on a 14" screen. Past that, apps hit their minimum sizes (Finder won't go below about 480pt wide) and start spilling off the edge.
+
+### Free mode
+
+⌥T floats every window so it moves and resizes like stock macOS, and new windows float too. Press it again and everything snaps back into the smart stack. Workspaces work the same in both, and the grid icon on the bar turns into two overlapping windows while free mode is on. System Settings always floats.
+
+### Controls
+
+Everything is a click away on the bar, and every shortcut is Option-based. The grid icon beside the workspaces opens a menu with free mode and the window commands, each showing its shortcut, so the keys can be picked up along the way.
+
+| Mouse or keys | Does |
 | --- | --- |
-| ⌥1 to ⌥5 | Go to a workspace |
-| ⌥⇧1 to ⌥⇧5 | Send the window there |
+| Click a workspace on the bar, or ⌥1 to ⌥5 | Go to that workspace |
+| Right-click a workspace, or ⌥⇧1 to ⌥⇧5 | Send the window you're in there |
 | ⌥⇥ | Back to the last workspace |
 | ⌥T | Tiling or free mode |
-| ⌥F | Float or tile one window |
+| ⌥F | Float or tile just this window |
 | ⌥↩ | Fullscreen |
-| ⌥/ | Flip the layout |
+| ⌥/ | Flip the split |
 | ⌥= | Tidy up: smart stack and even out sizes |
-| ⌃⌥ arrows | Move the window |
+| ⌃⌥ arrows | Move the window left, right, up or down |
 
 Option alone with the arrows is left for jumping by word in text.
 

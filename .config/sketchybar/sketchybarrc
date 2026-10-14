@@ -7,6 +7,7 @@
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 source "$CONFIG_DIR/helpers/ash.sh"
+rm -f "$MENU_STATE" # every menu starts closed
 
 # The Control Center helper builds from source the first time, and again when it changes
 if [ "$CONFIG_DIR/helpers/ccctl.swift" -nt "$CCCTL" ]; then
@@ -33,9 +34,9 @@ sketchybar --default updates=when_shown \
 # left: the Apple menu, workspaces, the layout menu, then the app in front
 
 sketchybar --add item apple left \
-  --set apple icon= icon.color=$TEXT label.drawing=off padding_right=6 \
-    "${POPUP[@]}" script="$PLUGIN_DIR/apple.sh" \
-  --subscribe apple mouse.clicked mouse.exited.global
+  --set apple icon= icon.color=$TEXT label.drawing=off padding_right=4 \
+    "${MENU_BUTTON[@]}" "${POPUP[@]}" script="$PLUGIN_DIR/apple.sh" \
+  --subscribe apple mouse.clicked mouse.entered mouse.exited mouse.exited.global
 
 menu_sep apple apple.top $CLEAR
 menu_row apple apple.about "About This Mac" "" "$PLUGIN_DIR/apple.sh about"
@@ -54,18 +55,21 @@ menu_row apple apple.logout "Log Out $(id -F)…" "⇧⌘Q" "$PLUGIN_DIR/apple.s
 menu_sep apple apple.bottom $CLEAR
 
 # AeroSpace workspaces: click one to go there, right-click to send the window
-# there. Each lists its apps, and the focused one gets the white wash.
+# there. Each lists its apps, the focused one gets the 10% wash, and the
+# rest fade in the 5% one under the mouse.
 sketchybar --add event aerospace_change
 
 for sid in 1 2 3 4 5; do
   sketchybar --add item space.$sid left \
     --set space.$sid icon=$sid \
-      icon.font="SF Mono:Semibold:12.0" icon.color=$DIM icon.highlight_color=$TEXT \
+      icon.font="SF Mono:Semibold:12.0" icon.color=$DIM \
       icon.padding_left=8 icon.padding_right=8 \
-      label.font="sketchybar-app-font:Regular:13.0" label.color=$DIM label.highlight_color=$TEXT \
+      label.font="sketchybar-app-font:Regular:13.0" label.color=$DIM \
       label.padding_left=0 label.padding_right=8 label.y_offset=-1 label.drawing=off \
-      background.color=$WASH background.corner_radius=7 background.height=22 background.drawing=off \
-      click_script="if [ \"\$BUTTON\" = right ]; then aerospace move-node-to-workspace --focus-follows-window $sid; else aerospace workspace $sid; fi"
+      background.color=$CLEAR background.corner_radius=7 background.height=22 background.drawing=on \
+      script="$PLUGIN_DIR/bar_hover.sh" \
+      click_script="if [ \"\$BUTTON\" = right ]; then aerospace move-node-to-workspace --focus-follows-window $sid; else aerospace workspace $sid; fi" \
+    --subscribe space.$sid mouse.entered mouse.exited
 done
 
 sketchybar --add item workspaces left \
@@ -75,10 +79,10 @@ sketchybar --add item workspaces left \
 # Tiling or free, and the few window commands worth knowing, with their shortcuts
 sketchybar --add item layout left \
   --set layout icon=󰕰 icon.color=$TEXT label.drawing=off padding_left=4 \
-    "${POPUP[@]}" script="$PLUGIN_DIR/popup.sh" \
-  --subscribe layout mouse.clicked mouse.exited.global
+    "${MENU_BUTTON[@]}" "${POPUP[@]}" script="$PLUGIN_DIR/popup.sh" \
+  --subscribe layout mouse.clicked mouse.entered mouse.exited mouse.exited.global
 
-close="sketchybar --set layout popup.drawing=off"
+close="\"$PLUGIN_DIR/popup.sh\" close layout"
 menu_sep layout layout.top $CLEAR
 menu_row layout layout.mode "Free mode" "⌥T" "$close; ~/.config/aerospace/mode.sh toggle"
 menu_sep layout layout.sep1
@@ -110,8 +114,8 @@ sketchybar --add item clock right \
 
 sketchybar --add item control_center right \
   --set control_center icon= icon.color=$TEXT label.drawing=off \
-    "${POPUP[@]}" popup.align=right script="$PLUGIN_DIR/control_center.sh" \
-  --subscribe control_center mouse.clicked mouse.exited.global
+    "${MENU_BUTTON[@]}" "${POPUP[@]}" popup.align=right script="$PLUGIN_DIR/control_center.sh" \
+  --subscribe control_center mouse.clicked mouse.entered mouse.exited mouse.exited.global
 
 cc="$PLUGIN_DIR/control_center.sh"
 menu_sep control_center cc.top $CLEAR
@@ -145,9 +149,11 @@ sketchybar --add item battery right \
   --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery power_source_change system_woke
 
+# Clicking the volume opens Control Center, like Apple's Sound menu
 sketchybar --add item volume right \
-  --set volume script="$PLUGIN_DIR/volume.sh" \
-  --subscribe volume volume_change
+  --set volume script="$PLUGIN_DIR/volume.sh" click_script="$PLUGIN_DIR/control_center.sh" \
+    background.color=$CLEAR background.height=24 background.corner_radius=7 background.drawing=on \
+  --subscribe volume volume_change mouse.entered mouse.exited
 
 sketchybar --add item cpu right \
   --set cpu icon= update_freq=5 script="$PLUGIN_DIR/cpu.sh"
@@ -155,8 +161,8 @@ sketchybar --add item cpu right \
 if [ -x /Applications/Tailscale.app/Contents/MacOS/Tailscale ]; then
   sketchybar --add item tailscale right \
     --set tailscale icon=󱗼 label.drawing=off update_freq=30 \
-      "${POPUP[@]}" popup.align=right script="$PLUGIN_DIR/tailscale.sh" \
-    --subscribe tailscale mouse.clicked mouse.exited.global system_woke
+      "${MENU_BUTTON[@]}" "${POPUP[@]}" popup.align=right script="$PLUGIN_DIR/tailscale.sh" \
+    --subscribe tailscale mouse.clicked mouse.entered mouse.exited mouse.exited.global system_woke
 
   menu_sep tailscale tailscale.top $CLEAR
   menu_row tailscale tailscale.power "Tailscale" "" "\"$PLUGIN_DIR/tailscale.sh\" power"

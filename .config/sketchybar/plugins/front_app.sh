@@ -6,4 +6,6 @@ app=$INFO
 
 source "$CONFIG_DIR/helpers/icon_map.sh"
 __icon_map "$app"
-sketchybar --set "$NAME" icon="$icon_result" label="$app"
+# The new app's name fades in, the way macOS swaps its bold app menu
+sketchybar --set "$NAME" icon="$icon_result" label="$app" icon.color=0x00e6e6e6 label.color=0x00e6e6e6 \
+  --animate tanh 15 --set "$NAME" icon.color=0xffe6e6e6 label.color=0xffe6e6e6

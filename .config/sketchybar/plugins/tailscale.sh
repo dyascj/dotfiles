@@ -3,9 +3,14 @@
 # Tailscale: white when connected and grey when off, with the exit node's
 # city beside it. The popup switches it, copies IPs and picks an exit node.
 
-[ "$SENDER" = mouse.exited.global ] && { sketchybar --set tailscale popup.drawing=off; exit 0; }
-
 source "$CONFIG_DIR/helpers/ash.sh"
+
+# The button: hover, open, switch and close like the real menu bar. Fill the
+# menu in only when it just opened.
+if [ "$NAME" = tailscale ] && [ "${SENDER#mouse.}" != "$SENDER" ]; then
+  menu_event tailscale "$SENDER" || exit 0
+  SENDER=mouse.clicked
+fi
 TS=/Applications/Tailscale.app/Contents/MacOS/Tailscale # the app is its own CLI
 
 json=$("$TS" status --json 2>/dev/null)
@@ -21,7 +26,7 @@ case "$1" in
     else
       "$TS" set --exit-node="$("$TS" exit-node suggest | awk '/^Suggested/ {print $4}')"
     fi ;;
-  copy) printf %s "$2" | pbcopy; sketchybar --set tailscale popup.drawing=off; exit 0 ;;
+  copy) printf %s "$2" | pbcopy; menu_close tailscale; exit 0 ;;
 esac
 [ -n "$1" ] && json=$("$TS" status --json 2>/dev/null)
 
@@ -32,7 +37,7 @@ city=${city%%-wg-*}
 
 color=$DIM
 [ "$state" = Running ] && color=$TEXT
-sketchybar --set tailscale icon.color=$color label="$city" label.drawing="$([ -n "$city" ] && echo on || echo off)"
+sketchybar --animate tanh 12 --set tailscale icon.color=$color label="$city" label.drawing="$([ -n "$city" ] && echo on || echo off)"
 
 # The popup is only rebuilt when it's opened or one of its rows is used
 [ "$SENDER" = mouse.clicked ] || exit 0
@@ -54,7 +59,6 @@ done < <(jq -r '[.Peer[]? | select(.ExitNodeOption | not)] | sort_by(.Online | n
 
 menu_sep tailscale tailscale.list.sep
 menu_row tailscale tailscale.list.exit "Exit node" "${city:-Off}" "\"$CONFIG_DIR/plugins/tailscale.sh\" exit"
-menu_row tailscale tailscale.list.open "Open Tailscale…" "" "sketchybar --set tailscale popup.drawing=off; open -a Tailscale"
+menu_row tailscale tailscale.list.open "Open Tailscale…" "" "\"$CONFIG_DIR/plugins/popup.sh\" close tailscale; open -a Tailscale"
 menu_sep tailscale tailscale.list.bottom "$CLEAR"
 
-[ "$NAME" = tailscale ] && sketchybar --set tailscale popup.drawing=toggle

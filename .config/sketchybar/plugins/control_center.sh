@@ -7,19 +7,29 @@
 
 source "$CONFIG_DIR/helpers/ash.sh"
 me="$CONFIG_DIR/plugins/control_center.sh"
+
+# The button: hover, open, switch and close like the real menu bar. Refresh
+# only when it just opened. Clicking the volume icon opens it too.
+if { [ "$NAME" = control_center ] || [ "$NAME" = volume ]; } && [ "${SENDER#mouse.}" != "$SENDER" ]; then
+  if [ "$NAME" = volume ]; then
+    [ "$(cat "$MENU_STATE" 2>/dev/null)" = control_center ] && { menu_close control_center; exit 0; }
+    menu_open control_center
+  else
+    menu_event control_center "$SENDER" || exit 0
+  fi
+  NAME=control_center SENDER=refresh
+fi
 ON=󰔡
 OFF=󰨙
 
 case "$NAME:$SENDER" in
-  control_center:mouse.exited.global) sketchybar --set control_center popup.drawing=off; exit 0 ;;
   cc.volume:mouse.clicked) osascript -e "set volume output volume $PERCENTAGE"; exit 0 ;;
   cc.volume:volume_change) sketchybar --set cc.volume slider.percentage="$INFO" --set cc.sound label="$INFO%"; exit 0 ;;
   cc.brightness:brightness_change) sketchybar --set cc.brightness slider.percentage="$INFO" --set cc.display label="$INFO%"; exit 0 ;;
   cc.brightness:mouse.clicked) "$CCCTL" brightness "$PERCENTAGE"; sketchybar --set cc.display label="$PERCENTAGE%"; exit 0 ;;
-  control_center:mouse.clicked) sketchybar --set control_center popup.drawing=toggle ;; # open with the last values, refresh after
 esac
 
-close="sketchybar --set control_center popup.drawing=off"
+close="menu_close control_center"
 wifi_dev() { networksetup -listallhardwareports | awk '/Wi-Fi/ {getline; print $2}'; }
 
 case "$1" in
@@ -72,7 +82,7 @@ shortcuts list >"$tmp/shortcuts" &
 osascript -e 'output volume of (get volume settings)' >"$tmp/volume" &
 "$CCCTL" outputs >"$tmp/outputs" &
 "$CCCTL" airpods >"$tmp/airpods" &
-"$CCCTL" nowplaying >"$tmp/playing" &
+"$CCCTL" nowplaying >"$tmp/playing" 2>/dev/null &
 defaults read -g AppleInterfaceStyle >"$tmp/dark" 2>/dev/null &
 wait
 
@@ -152,9 +162,10 @@ if [ "$shape" != "$(cat "$shape_file" 2>/dev/null)" ] ||
   menu_sep control_center cc.list.sep
   menu_row control_center cc.list.dark "Dark Mode" "" "\"$me\" dark"
   sketchybar --set cc.list.dark label.font="Hack Nerd Font:Regular:16.0"
-  menu_row control_center cc.list.capture "Capture Screen" "" "$close; open -a Screenshot"
+  shut="\"$CONFIG_DIR/plugins/popup.sh\" close control_center"
+  menu_row control_center cc.list.capture "Capture Screen" "" "$shut; open -a Screenshot"
   menu_row control_center cc.list.mirror "Screen Mirroring" "" \
-    "$close; open x-apple.systempreferences:com.apple.Displays-Settings.extension"
+    "$shut; open x-apple.systempreferences:com.apple.Displays-Settings.extension"
   menu_sep control_center cc.list.bottom "$CLEAR"
   mkdir -p "$(dirname "$shape_file")" && printf '%s' "$shape" >"$shape_file"
 fi

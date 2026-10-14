@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Clicking opens Control Center (its click_script); hovering fades the wash in
+case $SENDER in mouse.entered | mouse.exited) exec "$CONFIG_DIR/plugins/bar_hover.sh" ;; esac
+
 # INFO has the new volume on volume_change; ask macOS on startup
 vol=${INFO:-$(osascript -e 'output volume of (get volume settings)')}
 

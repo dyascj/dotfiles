@@ -1,12 +1,15 @@
 #!/bin/bash
 
-# The Apple menu: a click opens it, leaving closes it, and each row runs its action
-case "$SENDER" in
-  mouse.exited.global) sketchybar --set apple popup.drawing=off; exit 0 ;;
-  mouse.clicked) [ "$NAME" = apple ] && { sketchybar --set apple popup.drawing=toggle; exit 0; } ;;
-esac
+# The Apple menu: the button behaves like the real one (see menu_event),
+# and each row closes the menu and runs its action
+source "$CONFIG_DIR/helpers/ash.sh"
 
-sketchybar --set apple popup.drawing=off
+if [ "$NAME" = apple ]; then
+  menu_event apple "$SENDER"
+  exit 0
+fi
+
+menu_close apple
 case "$1" in
   about) open -a "About This Mac" ;;
   settings) open -a "System Settings" ;;

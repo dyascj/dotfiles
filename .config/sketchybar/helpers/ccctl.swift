@@ -26,15 +26,15 @@ func kv(_ o: NSObject, _ key: String) -> Int { (o.value(forKey: key) as? NSNumbe
 
 let ds = "/System/Library/PrivateFrameworks/DisplayServices.framework/DisplayServices"
 
-func builtinDisplay() -> CGDirectDisplayID {
+// The laptop screen when it's open, otherwise the main display (a Studio Display, say)
+func targetDisplay() -> CGDirectDisplayID {
     var ids = [CGDirectDisplayID](repeating: 0, count: 16), n: UInt32 = 0
     CGGetOnlineDisplayList(16, &ids, &n)
-    guard let id = ids.prefix(Int(n)).first(where: { CGDisplayIsBuiltin($0) != 0 }) else { fail("no built-in display online") }
-    return id
+    return ids.prefix(Int(n)).first(where: { CGDisplayIsBuiltin($0) != 0 }) ?? CGMainDisplayID()
 }
 
 func brightness(_ args: [String]) {
-    let id = builtinDisplay()
+    let id = targetDisplay()
     if let s = args.first {
         guard let v = Float(s), (0...100).contains(v) else { fail("brightness must be 0-100") }
         let set = sym(ds, "DisplayServicesSetBrightness", (@convention(c) (CGDirectDisplayID, Float) -> Int32).self)
@@ -42,7 +42,7 @@ func brightness(_ args: [String]) {
     } else {
         let get = sym(ds, "DisplayServicesGetBrightness", (@convention(c) (CGDirectDisplayID, UnsafeMutablePointer<Float>) -> Int32).self)
         var b: Float = 0
-        if get(id, &b) != 0 { fail("DisplayServicesGetBrightness failed") }
+        if get(id, &b) != 0 { fail("this display doesn't report its brightness") }
         print(Int((b * 100).rounded()))
     }
 }

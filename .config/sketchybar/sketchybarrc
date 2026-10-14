@@ -119,10 +119,10 @@ menu_row control_center cc.wifi "Wi-Fi" "" "\"$cc\" wifi"
 menu_row control_center cc.bluetooth "Bluetooth" "" "\"$cc\" bluetooth"
 menu_row control_center cc.airdrop "AirDrop" "" "\"$cc\" airdrop"
 menu_row control_center cc.focus "Focus" "" "\"$cc\" focus"
-menu_row control_center cc.dark "Dark Mode" "" "\"$cc\" dark"
-menu_row control_center cc.mirror "Screen Mirroring" "" \
-  "sketchybar --set control_center popup.drawing=off; open x-apple.systempreferences:com.apple.Displays-Settings.extension"
-menu_row control_center cc.capture "Capture Screen" "" "sketchybar --set control_center popup.drawing=off; open -a Screenshot"
+# The switches draw with the Nerd Font
+for row in cc.wifi cc.bluetooth cc.airdrop; do
+  sketchybar --set $row label.font="Hack Nerd Font:Regular:16.0"
+done
 menu_sep control_center cc.sep1
 
 slider() { # name
@@ -134,11 +134,12 @@ slider() { # name
 }
 menu_label control_center cc.display "Display"
 slider cc.brightness
-sketchybar --subscribe cc.brightness mouse.clicked
+sketchybar --subscribe cc.brightness mouse.clicked brightness_change
 menu_label control_center cc.sound "Sound"
 slider cc.volume
 sketchybar --subscribe cc.volume mouse.clicked volume_change
-# outputs, AirPods and now playing are added below these by the plugin on open
+# Sound outputs, Now Playing, Dark Mode, Capture Screen and Screen Mirroring
+# are added below these by the plugin
 
 sketchybar --add item battery right \
   --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \

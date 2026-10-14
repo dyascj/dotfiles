@@ -134,7 +134,8 @@ slider() { # name
     --set "$1" padding_left=16 padding_right=16 icon.drawing=off label.drawing=off \
       slider.background.height=4 slider.background.corner_radius=2 \
       slider.background.color=0x26ffffff slider.highlight_color=$TEXT \
-      slider.knob.drawing=off background.height=20 script="$cc"
+      slider.knob.drawing=off script="$cc" \
+      background.drawing=on background.color=$CLEAR background.height=20 # gives the row its height
 }
 # A brightness slider per display, for up to three; unused rows stay hidden
 for n in 1 2 3; do

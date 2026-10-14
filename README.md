@@ -1,5 +1,7 @@
 # dotfiles
 
+![Ash: T3 Code glass, Ghostty with neofetch and cmatrix, AeroSpace tiling and SketchyBar](.github/assets/desktop.png)
+
 My macOS setup, managed with [yadm](https://yadm.io). The repo's work tree is my actual home directory, so these are real files sitting where they belong. No symlink farm to babysit, and a new machine gets dressed in one command.
 
 ## Ash

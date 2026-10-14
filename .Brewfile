@@ -59,6 +59,7 @@ brew "duti"
 # Fun
 brew "asciiquarium"
 brew "nethack"
+brew "cmatrix"
 
 # Apps
 cask "ghostty"

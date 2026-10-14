@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# A soft white line around the focused window, nothing around the rest.
+# Smart stacking splits the focused window, so this shows where the next one goes.
+borders style=round width=2.0 hidpi=on \
+  active_color=0x66ffffff inactive_color=0x00000000

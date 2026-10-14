@@ -105,6 +105,12 @@ if command -v sketchybar &>/dev/null; then
     brew services start sketchybar >/dev/null || echo "==> sketchybar didn't start, run 'brew services start sketchybar'"
 fi
 
+# The focus border around the active window
+if command -v borders &>/dev/null; then
+    echo "==> Starting borders..."
+    brew services start borders >/dev/null || echo "==> borders didn't start, run 'brew services start borders'"
+fi
+
 # Right Control acts as right Option, for keyboards without one. It runs at every login.
 KEYMAP="$HOME/Library/LaunchAgents/local.keyboard.right-option.plist"
 if [ -f "$KEYMAP" ]; then

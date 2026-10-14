@@ -152,6 +152,14 @@
   fill: var(--ash-bright) !important;
 }
 
+/* see-through websites: Zen Internet clears the backgrounds of sites it knows,
+   and the glass shows through. Zen lays a faint white tint behind every page,
+   which would grey that glass out, so it goes. Needs the
+   browser.tabs.allow_transparent_browser pref, which bootstrap sets. */
+.browserStack > browser {
+  background-color: transparent !important;
+}
+
 /* web content: a hairline frame instead of a drop shadow */
 .browserSidebarContainer {
   box-shadow: 0 0 0 1px var(--ash-line) !important;

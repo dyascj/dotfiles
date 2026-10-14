@@ -52,7 +52,8 @@ if [ -f "$ZEN_DIR/profiles.ini" ] && [ -f "$ZEN_CSS" ]; then
         # userChrome.css only loads with the first pref. The rest make Zen's
         # glass read like T3's: acrylic url bar and compact sidebar, the clear
         # fullScreenUI material (2) instead of the heavy hudWindow (1), and no
-        # greying out when the window loses focus.
+        # greying out when the window loses focus. The last one lets web pages
+        # be see-through, for the Zen Internet add-on.
         ZEN_USERJS="$ZEN_DIR/$ZEN_PROFILE/user.js"
         while read -r pref value; do
             touch "$ZEN_USERJS"
@@ -64,6 +65,7 @@ zen.theme.acrylic-urlbar true
 zen.theme.acrylic-sidebar true
 zen.widget.macos.window-material 2
 zen.view.grey-out-inactive-windows false
+browser.tabs.allow_transparent_browser true
 PREFS
     fi
 else

@@ -12,7 +12,7 @@ I paint my own terminal palettes. The current one is **Ash**: black glass, a pla
 
 The top row is the grey ramp, from the black glass up to the text color. The bottom row is the pastels: rose, peach, butter, mint, aqua, sky, lilac, plus pure white. Hover and selection are white washes (5% and 10%), borders are 7% white hairlines, and sky `#a6c8f4` is the one accent.
 
-It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy on the clear fullScreenUI material with a 55% black wash on top, a touch lighter than T3's black glass. The acrylic url bar and compact sidebar float over it.
+It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy on the clear fullScreenUI material with a 55% black wash on top, a touch lighter than T3's black glass. The acrylic url bar and compact sidebar float over it. Websites can be see-through too: bootstrap turns on Zen's transparent-page pref and the sheet drops the white tint Zen lays behind pages, then the [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) add-on clears the backgrounds of the sites in its style library (GitHub, YouTube and friends), so the glass runs right through the page.
 
 Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs.
 
@@ -111,6 +111,7 @@ A few things only macOS can say yes to, so they wait for me after bootstrap:
 - **Prompts on first use:** let `ccctl` use Bluetooth (AirPods in Control Center) and let SketchyBar control System Events (Dark Mode).
 - **Shortcuts:** make one called Toggle Focus with a Set Focus action that toggles Do Not Disturb, for the Focus switch.
 - **Tailscale:** sign in.
+- **Zen Internet:** install the add-on in Zen, open its popup and hit "Refetch latest styles" with auto-update on.
 
 Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Zen has no profile until it's opened once, so launch it, quit it, and run `yadm bootstrap` again to wire it up. Every step skips what's already done, so rerunning is safe.
 

@@ -14,15 +14,12 @@ The top row is the grey ramp, from the black glass up to the text color. The bot
 
 It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy on the clear fullScreenUI material with a 55% black wash on top, a touch lighter than T3's black glass. The acrylic url bar and compact sidebar float over it. Websites can be see-through too: bootstrap turns on Zen's transparent-page pref and the sheet drops the white tint Zen lays behind pages, then the [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) add-on clears the backgrounds of the sites in its style library (GitHub, YouTube and friends), so the glass runs right through the page.
 
-Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs.
+Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs. One palette, five surfaces.
 
-The menu bar is [SketchyBar](https://github.com/FelixKratz/SketchyBar), in `.config/sketchybar/`. It floats as a strip of black glass with a 7% hairline, everything grey until it's active, then white. On the left sit the Spaces that are in use, each with icons for the apps open in it, and the app in front. On the right are Vorssaint, Tailscale, CPU, volume, battery, a Control Center and the clock. The only color is rose on the battery when it's low and unplugged.
-
-The Apple logo, the layout grid, Tailscale and Control Center open popup menus in black glass thin enough for the blurred desktop to show through. They behave like the real menu bar: a click opens one and lights its button, sliding to another button while one is open switches to it, and leaving the bar closes it. Anything clickable fades in a 5% wash under the mouse, the focused workspace crossfades when it changes, and the front app's name fades in on a switch. Clicking the volume opens Control Center, like Apple's Sound menu. The Apple menu does what the real one does. Tailscale's switches the connection, copies the IP of this Mac or any of my devices, and turns the exit node on with Tailscale's suggestion or off again. Control Center mirrors the stock one: Wi-Fi, Bluetooth, AirDrop, Focus, Dark Mode, Screen Mirroring and Capture Screen, brightness and volume sliders, every sound output with AirPods battery and a tap to connect them, and what's playing. macOS has no command line for half of that, so `.config/sketchybar/helpers/ccctl.swift` does it, built into `~/.cache` the first time the bar starts. Focus runs a Shortcut named Toggle Focus. AirPods noise control isn't something macOS lets anything but its own Control Center change. Vorssaint's icon opens its own panel. That clicks the hidden menu bar icon, so sketchybar needs Accessibility in System Settings. Force Quit uses the real shortcut for the same reason, and falls back to Activity Monitor without it. The bar sits above the real menu bar, so it still slides down at the top edge but never covers the bar. One palette, six surfaces.
 
 ## Tiling
 
-Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps that line up with the bar. The config lives in `.config/aerospace/aerospace.toml`, and the smart stacking and free mode behind it in `.config/aerospace/mode.sh`.
+Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps. The config lives in `.config/aerospace/aerospace.toml`, and the smart stacking and free mode behind it in `.config/aerospace/mode.sh`.
 
 ### Smart stacking
 
@@ -38,22 +35,22 @@ A new window splits the window you're in, and each split turns the other way fro
 ```
 
 - **Pick where it lands.** The new window splits whichever window is focused, so click the one it should share space with before opening it. Open from 1 instead of 3 above and you get a 2x2 grid.
-- **Tidy up** (⌥= or the layout menu) rebuilds the workspace you're on into the spiral and evens out the sizes. Use it when a workspace gets messy, or after dragging windows in from another one.
+- **Tidy up** (⌥=) rebuilds the workspace you're on into the spiral and evens out the sizes. Use it when a workspace gets messy, or after dragging windows in from another one.
 - **Flip** (⌥/) turns a split sideways when a pair would read better stacked, or side by side.
 - **Two to four windows** per workspace is the sweet spot on a 14" screen. Past that, apps hit their minimum sizes (Finder won't go below about 480pt wide) and start spilling off the edge.
 
 ### Free mode
 
-⌥T floats every window so it moves and resizes like stock macOS, and new windows float too. Press it again and everything snaps back into the smart stack. Workspaces work the same in both, and the grid icon on the bar turns into two overlapping windows while free mode is on. System Settings always floats.
+⌥T floats every window so it moves and resizes like stock macOS, and new windows float too. Press it again and everything snaps back into the smart stack. Workspaces work the same in both. System Settings always floats.
 
 ### Controls
 
-Everything is a click away on the bar, and every shortcut is Option-based. The grid icon beside the workspaces opens a menu with free mode and the window commands, each showing its shortcut, so the keys can be picked up along the way.
+Every shortcut is Option-based.
 
-| Mouse or keys | Does |
+| Keys | Does |
 | --- | --- |
-| Click a workspace on the bar, or ⌥1 to ⌥5 | Go to that workspace |
-| Right-click a workspace, or ⌥⇧1 to ⌥⇧5 | Send the window you're in there |
+| ⌥1 to ⌥5 | Go to that workspace |
+| ⌥⇧1 to ⌥⇧5 | Send the window you're in there |
 | ⌥⇥ | Back to the last workspace |
 | ⌥T | Tiling or free mode |
 | ⌥F | Float or tile just this window |
@@ -79,7 +76,6 @@ My Keychron has no right Option key, so right Control stands in for it. A Launch
 | [T3 Code](https://github.com/dyascj/t3code/tree/glass) (glass fork) | cloned by bootstrap |
 | btop | `.config/btop/` |
 | [AeroSpace](https://github.com/nikitabobko/AeroSpace) | `.config/aerospace/` |
-| [SketchyBar](https://github.com/FelixKratz/SketchyBar) | `.config/sketchybar/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
 
@@ -100,14 +96,11 @@ Homebrew comes first because yadm installs through it. `yadm clone` puts every f
 - Installs my VS Code extensions from a saved list.
 - Clones my [T3 Code glass fork](https://github.com/dyascj/t3code/tree/glass) into `~/Developer/t3code-glass`, links `t3-glass-update` into `~/.local/bin`, and sets up the private Rust toolchain it builds with. Run `t3-glass-update` afterwards to build and install the app (it takes a few minutes).
 - Sets zsh as the default shell.
-- Hides the macOS menu bar and starts SketchyBar in its place. Its first start builds the Control Center helper from source.
 - Starts AeroSpace, which starts itself at every login after that.
 
 A few things only macOS can say yes to, so they wait for me after bootstrap:
 
-- **Privacy & Security > Accessibility:** turn on AeroSpace, or nothing tiles. Turn on `sketchybar` too, for Vorssaint's panel and the real Force Quit window.
-- **Prompts on first use:** let `ccctl` use Bluetooth (AirPods in Control Center) and let SketchyBar control System Events (Dark Mode).
-- **Shortcuts:** make one called Toggle Focus with a Set Focus action that toggles Do Not Disturb, for the Focus switch.
+- **Privacy & Security > Accessibility:** turn on AeroSpace, or nothing tiles.
 - **Tailscale:** sign in.
 - **Zen Internet:** install the add-on in Zen, open its popup and hit "Refetch latest styles" with auto-update on.
 

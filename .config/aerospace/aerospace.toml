@@ -6,26 +6,21 @@
 
 config-version = 2
 start-at-login = true
-after-startup-command = ['exec-and-forget sketchybar --trigger aerospace_change']
 
 persistent-workspaces = ['1', '2', '3', '4', '5']
 
-# Tell the bar whenever focus, a workspace, or the windows in it change
-on-focus-changed = ['exec-and-forget sketchybar --trigger aerospace_change']
-
-# The bar and helper scripts live in Homebrew's bin
+# Helper scripts live in Homebrew's bin
 [exec.env-vars]
 PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 
-# Line windows up with the bar: 10pt everywhere, and room under the bar on top.
-# The built-in screen already keeps 32pt for the notch, others keep nothing.
+# 10pt gaps all around
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.right = 10
 outer.bottom = 10
-outer.top = [{ monitor.'built-in' = 14 }, 46]
+outer.top = 10
 
 [mode.main.binding]
 # workspaces

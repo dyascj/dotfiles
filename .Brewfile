@@ -1,6 +1,5 @@
 tap "nikitabobko/tap"
 tap "anomalyco/tap"
-tap "FelixKratz/formulae"
 
 # Shell & terminal
 brew "powerlevel10k"
@@ -52,7 +51,6 @@ brew "btop"
 brew "neofetch"
 brew "coreutils"
 brew "osx-cpu-temp"
-brew "sketchybar"
 brew "defaultbrowser"
 brew "duti"
 
@@ -77,4 +75,3 @@ cask "tiled"
 
 # Fonts
 cask "font-hack-nerd-font"
-cask "font-sketchybar-app-font"

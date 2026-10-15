@@ -98,15 +98,6 @@ if [ -d "$T3_REPO" ]; then
     echo "==> Run t3-glass-update to build and install T3 Code (glass)"
 fi
 
-# sketchybar stands in for the menu bar, so hide the real one and start it.
-# Its first start also builds the Control Center helper, which takes a few seconds.
-if command -v sketchybar &>/dev/null; then
-    echo "==> Starting sketchybar..."
-    osascript -e 'tell application "System Events" to set autohide menu bar of dock preferences to true' ||
-        echo "==> Couldn't hide the menu bar, turn on auto-hide in Control Center settings"
-    brew services start sketchybar >/dev/null || echo "==> sketchybar didn't start, run 'brew services start sketchybar'"
-fi
-
 # Right Control acts as right Option, for keyboards without one. It runs at every login.
 KEYMAP="$HOME/Library/LaunchAgents/local.keyboard.right-option.plist"
 if [ -f "$KEYMAP" ]; then

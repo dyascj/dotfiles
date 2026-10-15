@@ -24,7 +24,6 @@ case "$1" in
     # Back in tiling, let the rules float what should float (Settings, say)
     [ "$layout" = tiling ] && aerospace run-callback --for-every-window on-window-detected
     [ "$layout" = tiling ] && "$0" tidy
-    sketchybar --trigger aerospace_change
     ;;
 
   # A new window. AeroSpace puts it right after the focused window, in the same

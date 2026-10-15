@@ -64,8 +64,6 @@ Everything is a click away on the bar, and every shortcut is Option-based. The g
 
 Option alone with the arrows is left for jumping by word in text.
 
-The focused window wears a soft white line from [JankyBorders](https://github.com/FelixKratz/JankyBorders) (`.config/borders/bordersrc`), so it's clear which window the next one will split.
-
 My Keychron has no right Option key, so right Control stands in for it. A LaunchAgent in `Library/LaunchAgents/local.keyboard.right-option.plist` remaps it with `hidutil` at every login. The Mac's own keyboards have no right Control, so they're untouched.
 
 ## What's inside

@@ -53,7 +53,6 @@ brew "neofetch"
 brew "coreutils"
 brew "osx-cpu-temp"
 brew "sketchybar"
-brew "borders"
 brew "defaultbrowser"
 brew "duti"
 

@@ -6,15 +6,18 @@
 source "$CONFIG_DIR/helpers/icon_map.sh"
 source "$CONFIG_DIR/helpers/ash.sh"
 
+# Two queries in all, since this runs on every focus change while AeroSpace is
+# busy moving windows: every window with its workspace, then the focused one
 focused=$(aerospace list-workspaces --focused 2>/dev/null)
+windows=$(aerospace list-windows --all --format '%{workspace}|%{app-name}' 2>/dev/null | sort -u)
 args=()
 for ws in 1 2 3 4 5; do
   icons=""
-  while IFS= read -r app; do
-    [ -n "$app" ] || continue
+  while IFS='|' read -r space app; do
+    [ "$space" = "$ws" ] && [ -n "$app" ] || continue
     __icon_map "$app"
     icons+="$icon_result"
-  done < <(aerospace list-windows --workspace "$ws" --format '%{app-name}' 2>/dev/null | sort -u)
+  done <<<"$windows"
 
   # Colors rather than highlight flags, so the switch crossfades instead of snapping
   if [ "$ws" = "$focused" ]; then wash=$WASH ink=$TEXT; else wash=$CLEAR ink=$DIM; fi
@@ -25,7 +28,7 @@ for ws in 1 2 3 4 5; do
 done
 
 # Grid when tiling, overlapping windows when free
-if [ "$("$HOME/.config/aerospace/mode.sh" status)" = free ]; then
+if [ -e "$HOME/.cache/aerospace/free" ]; then # the flag mode.sh keeps
   args+=(--set layout icon=󰖲 --set layout.mode icon="Tiling mode")
 else
   args+=(--set layout icon=󰕰 --set layout.mode icon="Free mode")

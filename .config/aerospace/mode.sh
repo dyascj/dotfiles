@@ -33,16 +33,24 @@ case "$1" in
     if [ -e "$FLAG" ]; then
       aerospace layout --window-id "$AEROSPACE_WINDOW_ID" floating
     else
-      # Only the window id is passed in, so look up which workspace it landed on
-      ws=$(aerospace list-windows --all --format '%{window-id} %{workspace}' | awk -v id="$AEROSPACE_WINDOW_ID" '$1 == id {print $2}')
-      tiled=$(aerospace list-windows --workspace "$ws" --format '%{window-layout}' | grep -c '_tiles')
-      if [ "$tiled" -ge 3 ]; then
-        if aerospace test '%{window-layout}' = h_tiles; then
-          aerospace join-with --window-id "$AEROSPACE_WINDOW_ID" left
-        elif aerospace test '%{window-layout}' = v_tiles; then
-          aerospace join-with --window-id "$AEROSPACE_WINDOW_ID" up
-        fi
-      fi
+      # One query for everything: which workspace the window landed on, how
+      # many windows tile there, and its own split. Every extra round trip to
+      # AeroSpace delays the join, and the window visibly lands, then jumps.
+      dir=$(aerospace list-windows --all --format '%{window-id} %{workspace} %{window-layout}' |
+        awk -v id="$AEROSPACE_WINDOW_ID" '
+          { ws[$1] = $2; layout[$1] = $3; if ($3 ~ /_tiles$/) tiled[$2]++ }
+          END {
+            # First window on a workspace: an empty one remembers its last split,
+            # so start it side by side again for the wide screens here
+            if (tiled[ws[id]] == 1 && layout[id] == "v_tiles") print "reset"
+            if (tiled[ws[id]] < 3) exit
+            if (layout[id] == "h_tiles") print "left"
+            else if (layout[id] == "v_tiles") print "up"
+          }')
+      case $dir in
+        reset) aerospace layout --window-id "$AEROSPACE_WINDOW_ID" h_tiles ;;
+        left | up) aerospace join-with --window-id "$AEROSPACE_WINDOW_ID" "$dir" ;;
+      esac
     fi
     ;;
 

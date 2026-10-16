@@ -1,4 +1,3 @@
-tap "nikitabobko/tap"
 tap "anomalyco/tap"
 
 # Shell & terminal
@@ -65,7 +64,6 @@ cask "zen"
 cask "zed"
 cask "visual-studio-code"
 cask "codex"
-cask "nikitabobko/tap/aerospace"
 cask "sol"
 cask "stats"
 # Skipped when already installed outside Homebrew, so bundle doesn't trip over them

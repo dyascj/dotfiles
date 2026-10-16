@@ -105,10 +105,19 @@ if [ -f "$KEYMAP" ]; then
     launchctl bootstrap "gui/$(id -u)" "$KEYMAP" 2>/dev/null || launchctl kickstart "gui/$(id -u)/local.keyboard.right-option" || true
 fi
 
-# AeroSpace starts itself at login after this. It needs Accessibility before it works.
-if [ -d /Applications/AeroSpace.app ]; then
-    echo "==> Starting AeroSpace (allow it in Privacy & Security > Accessibility)..."
-    open -a AeroSpace
+# Slat, my window manager: the latest release once, then it keeps itself updated.
+# It needs Accessibility before it can tile.
+if [ ! -d /Applications/Slat.app ]; then
+    echo "==> Installing Slat..."
+    SLAT_TMP=$(mktemp -d)
+    if curl -fsSL -o "$SLAT_TMP/Slat.zip" https://github.com/dyascj/slat/releases/latest/download/Slat.zip &&
+        ditto -x -k "$SLAT_TMP/Slat.zip" /Applications; then
+        xattr -dr com.apple.quarantine /Applications/Slat.app 2>/dev/null || true
+        open -a Slat
+    else
+        echo "==> Couldn't install Slat, grab it from https://github.com/dyascj/slat/releases/latest"
+    fi
+    rm -rf "$SLAT_TMP"
 fi
 
 echo "==> Bootstrap complete!"

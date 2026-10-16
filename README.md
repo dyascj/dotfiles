@@ -1,8 +1,15 @@
 # dotfiles
 
-![Ash: T3 Code glass, Ghostty with neofetch and cmatrix, AeroSpace tiling and SketchyBar](.github/assets/desktop.png)
+![Ash on my desktop: T3 Code glass beside Ghostty running neofetch and cmatrix](.github/assets/desktop.png)
 
 My macOS setup, managed with [yadm](https://yadm.io). The repo's work tree is my actual home directory, so these are real files sitting where they belong. No symlink farm to babysit, and a new machine gets dressed in one command.
+
+## Built by me
+
+Two of the apps in here are my own:
+
+- **[Slat](https://github.com/dyascj/slat)** is my window manager, a fast, minimal scrolling tiling window manager for macOS, written in Rust.
+- **[T3 Code glass](https://github.com/dyascj/t3code/tree/glass)** is my fork of T3 Code, dressed in the same black glass as everything here.
 
 ## Ash
 
@@ -16,50 +23,11 @@ It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tr
 
 Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs. One palette, five surfaces.
 
+## Windows
 
-## Tiling
+Windows tile with [Slat](https://github.com/dyascj/slat), my own window manager. Bootstrap installs its latest release, and Slat keeps itself up to date from there. Its settings live in the app, under `~/Library/Application Support/Slat/`.
 
-Windows tile with [AeroSpace](https://github.com/nikitabobko/AeroSpace) across five workspaces, with 10pt gaps. The config lives in `.config/aerospace/aerospace.toml`, and the smart stacking and free mode behind it in `.config/aerospace/mode.sh`.
-
-### Smart stacking
-
-A new window splits the window you're in, and each split turns the other way from the last. Windows spiral into a grid instead of piling into thin strips:
-
-```
-1 window      2 windows      3 windows       4 windows
-┌───────┐     ┌───┬───┐      ┌───┬───┐       ┌───┬───┐
-│       │     │   │   │      │   │ 2 │       │   │ 2 │
-│   1   │     │ 1 │ 2 │      │ 1 ├───┤       │ 1 ├─┬─┤
-│       │     │   │   │      │   │ 3 │       │   │3│4│
-└───────┘     └───┴───┘      └───┴───┘       └───┴─┴─┘
-```
-
-- **Pick where it lands.** The new window splits whichever window is focused, so click the one it should share space with before opening it. Open from 1 instead of 3 above and you get a 2x2 grid.
-- **Tidy up** (⌥=) rebuilds the workspace you're on into the spiral and evens out the sizes. Use it when a workspace gets messy, or after dragging windows in from another one.
-- **Flip** (⌥/) turns a split sideways when a pair would read better stacked, or side by side.
-- **Two to four windows** per workspace is the sweet spot on a 14" screen. Past that, apps hit their minimum sizes (Finder won't go below about 480pt wide) and start spilling off the edge.
-
-### Free mode
-
-⌥T floats every window so it moves and resizes like stock macOS, and new windows float too. Press it again and everything snaps back into the smart stack. Workspaces work the same in both. System Settings always floats.
-
-### Controls
-
-Every shortcut is Option-based.
-
-| Keys | Does |
-| --- | --- |
-| ⌥1 to ⌥5 | Go to that workspace |
-| ⌥⇧1 to ⌥⇧5 | Send the window you're in there |
-| ⌥⇥ | Back to the last workspace |
-| ⌥T | Tiling or free mode |
-| ⌥F | Float or tile just this window |
-| ⌥↩ | Fullscreen |
-| ⌥/ | Flip the split |
-| ⌥= | Tidy up: smart stack and even out sizes |
-| ⌃⌥ arrows | Move the window left, right, up or down |
-
-Option alone with the arrows is left for jumping by word in text.
+## Keyboard
 
 My Keychron has no right Option key, so right Control stands in for it. A LaunchAgent in `Library/LaunchAgents/local.keyboard.right-option.plist` remaps it with `hidutil` at every login. The Mac's own keyboards have no right Control, so they're untouched.
 
@@ -73,9 +41,9 @@ My Keychron has no right Option key, so right Control stands in for it. A Launch
 | [powerlevel10k](https://github.com/romkatv/powerlevel10k) | `.p10k.zsh` |
 | [Zed](https://zed.dev) | `.config/zed/` |
 | [Zen Browser](https://zen-browser.app) | `.config/zen/chrome/userChrome.css` |
-| [T3 Code](https://github.com/dyascj/t3code/tree/glass) (glass fork) | cloned by bootstrap |
+| [T3 Code](https://github.com/dyascj/t3code/tree/glass) (my glass fork) | cloned by bootstrap |
+| [Slat](https://github.com/dyascj/slat) (mine) | installed by bootstrap |
 | btop | `.config/btop/` |
-| [AeroSpace](https://github.com/nikitabobko/AeroSpace) | `.config/aerospace/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
 
@@ -91,16 +59,16 @@ yadm bootstrap
 
 Homebrew comes first because yadm installs through it. `yadm clone` puts every file where it belongs, and the [bootstrap script](.config/yadm/bootstrap) handles the rest:
 
-- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, AeroSpace, Sol, Tailscale, Vorssaint). A failed package gets reported and the setup keeps going.
+- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, Sol, Tailscale, Vorssaint). A failed package gets reported and the setup keeps going.
 - Copies SF Mono out of Terminal.app so Ghostty can use it.
 - Installs my VS Code extensions from a saved list.
 - Clones my [T3 Code glass fork](https://github.com/dyascj/t3code/tree/glass) into `~/Developer/t3code-glass`, links `t3-glass-update` into `~/.local/bin`, and sets up the private Rust toolchain it builds with. Run `t3-glass-update` afterwards to build and install the app (it takes a few minutes).
 - Sets zsh as the default shell.
-- Starts AeroSpace, which starts itself at every login after that.
+- Installs [Slat](https://github.com/dyascj/slat) from its latest release and opens it.
 
 A few things only macOS can say yes to, so they wait for me after bootstrap:
 
-- **Privacy & Security > Accessibility:** turn on AeroSpace, or nothing tiles.
+- **Privacy & Security > Accessibility:** turn on Slat, or nothing tiles.
 - **Tailscale:** sign in.
 - **Zen Internet:** install the add-on in Zen, open its popup and hit "Refetch latest styles" with auto-update on.
 

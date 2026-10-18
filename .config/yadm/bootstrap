@@ -120,4 +120,25 @@ if [ ! -d /Applications/Slat.app ]; then
     rm -rf "$SLAT_TMP"
 fi
 
+# Discord goes glass through Vencord. The installer patches Discord.app, so Discord
+# has to be quit and the terminal allowed under App Management. It moves the stock
+# app.asar to _app.asar, which is how we know it's already done.
+DISCORD_RES="/Applications/Discord.app/Contents/Resources"
+if [ -d "$DISCORD_RES" ] && [ ! -f "$DISCORD_RES/_app.asar" ]; then
+    echo "==> Installing Vencord into Discord..."
+    VENCORD_CLI=$(mktemp)
+    if ! { curl -fsSL -o "$VENCORD_CLI" https://github.com/Vencord/Installer/releases/latest/download/VencordInstallerCli-darwin &&
+        chmod +x "$VENCORD_CLI" && "$VENCORD_CLI" -install -branch stable; }; then
+        echo "==> Couldn't install Vencord. Quit Discord, allow your terminal under App Management, rerun bootstrap"
+    fi
+    rm -f "$VENCORD_CLI"
+fi
+
+# Keeps Discord's blur on when it loses focus, re-patching Vencord after every Vencord update
+DISCORD_AGENT="$HOME/Library/LaunchAgents/local.discord.vencord-vibrancy.plist"
+if [ -f "$DISCORD_AGENT" ]; then
+    echo "==> Keeping Discord glassy when unfocused..."
+    launchctl bootstrap "gui/$(id -u)" "$DISCORD_AGENT" 2>/dev/null || launchctl kickstart "gui/$(id -u)/local.discord.vencord-vibrancy" || true
+fi
+
 echo "==> Bootstrap complete!"

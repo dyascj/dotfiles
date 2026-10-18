@@ -69,6 +69,7 @@ cask "stats"
 # Skipped when already installed outside Homebrew, so bundle doesn't trip over them
 cask "tailscale-app" unless File.exist?("/Applications/Tailscale.app")
 cask "vorssaint" unless File.exist?("/Applications/Vorssaint.app")
+cask "discord" unless File.exist?("/Applications/Discord.app")
 cask "tiled"
 
 # Fonts

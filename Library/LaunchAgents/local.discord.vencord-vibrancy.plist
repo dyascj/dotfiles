@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Re-applies visualEffectState="active" to Vencord's patcher after Vencord updates, so Discord stays glassy when unfocused. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.discord.vencord-vibrancy</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>F="$HOME/Library/Application Support/Vencord/dist/patcher.js"; grep -q visualEffectState "$F" || sed -i '' 's/\([A-Za-z_$][A-Za-z0-9_$]*\)\.vibrancy=\([A-Za-z_$][A-Za-z0-9_$]*\),/\1.vibrancy=\2,\1.visualEffectState="active",/' "$F"</string>
+    </array>
+    <key>WatchPaths</key>
+    <array>
+        <string>/Users/charlesdyas/Library/Application Support/Vencord/dist</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>

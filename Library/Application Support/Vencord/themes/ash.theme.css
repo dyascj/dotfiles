@@ -1,0 +1,171 @@
+/**
+ * @name Ash
+ * @author CJ
+ * @description Black glass to match Ghostty Ash and T3 Code. Pair with Vencord's macOS vibrancy.
+ * @version 1.0.0
+ */
+
+/* knobs */
+:root {
+    --ash-tint: rgba(0, 0, 0, 0.4);       /* window glass, Ghostty uses 0.85 */
+    --ash-float: rgba(14, 14, 14, 0.96);  /* menus, popouts, modals */
+    --ash-raise: rgba(255, 255, 255, 0.04);
+    --ash-hover: rgba(255, 255, 255, 0.05);
+    --ash-select: rgba(255, 255, 255, 0.09);
+    --ash-line: #1f1f1f;
+    --ash-fg: #e6e6e6;
+    --ash-muted: #8c8c8c;
+    --ash-blue: #a6c8f4;
+    --ash-green: #a6dcb8;
+    --ash-yellow: #f2dc9c;
+    --ash-red: #f4a6b4;
+    --ash-purple: #c8b4f0;
+}
+
+/* one tinted layer at the root, everything above it clear so the blur shows once */
+html,
+body {
+    background: transparent !important;
+}
+
+#app-mount {
+    background: var(--ash-tint) !important;
+}
+
+:root,
+.theme-dark,
+.theme-darker,
+.theme-midnight,
+.visual-refresh,
+.visual-refresh.theme-dark,
+.visual-refresh.theme-midnight {
+    /* layers: clear */
+    --background-primary: transparent;
+    --background-secondary: transparent;
+    --background-secondary-alt: transparent;
+    --background-tertiary: transparent;
+    --background-base-lowest: transparent;
+    --background-base-lower: transparent;
+    --background-base-low: transparent;
+    --background-surface-high: var(--ash-raise);
+    --background-surface-higher: var(--ash-raise);
+    --background-surface-highest: var(--ash-select);
+    --bg-base-primary: transparent;
+    --bg-base-secondary: transparent;
+    --bg-base-tertiary: transparent;
+    --bg-surface-raised: var(--ash-raise);
+    --chat-background-default: transparent;
+    --app-frame-background: transparent;
+    --app-frame-border: var(--ash-line);
+    --background-nested-floating: transparent;
+    --background-mentioned: rgba(242, 220, 156, 0.06);
+    --background-message-hover: rgba(255, 255, 255, 0.02);
+    --channeltextarea-background: var(--ash-raise);
+    --input-background: var(--ash-raise);
+    --custom-channel-members-bg: transparent;
+
+    /* floating things stay solid enough to read */
+    --background-floating: var(--ash-float);
+    --bg-surface-overlay: var(--ash-float);
+    --modal-background: var(--ash-float);
+    --modal-footer-background: var(--ash-float);
+    --home-background: transparent;
+
+    /* states */
+    --background-modifier-hover: var(--ash-hover);
+    --background-modifier-active: var(--ash-select);
+    --background-modifier-selected: var(--ash-select);
+    --background-modifier-accent: var(--ash-line);
+    --bg-mod-subtle: var(--ash-hover);
+    --bg-mod-strong: var(--ash-select);
+
+    /* hairlines */
+    --border-faint: var(--ash-line);
+    --border-subtle: var(--ash-line);
+    --border-normal: #2a2a2a;
+    --border-strong: #3a3a3a;
+
+    /* text */
+    --text-normal: var(--ash-fg);
+    --text-default: var(--ash-fg);
+    --text-strong: #ffffff;
+    --header-primary: #ffffff;
+    --header-secondary: var(--ash-muted);
+    --text-muted: var(--ash-muted);
+    --channels-default: var(--ash-muted);
+    --interactive-normal: #b4b4b4;
+    --interactive-hover: var(--ash-fg);
+    --interactive-active: #ffffff;
+    --interactive-muted: #5a5a5a;
+    --text-link: var(--ash-blue);
+
+    /* pastel accents */
+    --brand-500: var(--ash-blue);
+    --brand-560: #94b8e8;
+    --text-brand: var(--ash-blue);
+    --status-positive: var(--ash-green);
+    --status-warning: var(--ash-yellow);
+    --status-danger: var(--ash-red);
+    --text-positive: var(--ash-green);
+    --text-warning: var(--ash-yellow);
+    --text-danger: var(--ash-red);
+    --info-danger-foreground: var(--ash-red);
+    --mention-foreground: var(--ash-blue);
+    --mention-background: rgba(166, 200, 244, 0.14);
+
+    /* type */
+    --font-primary: -apple-system, "SF Pro Text", system-ui, sans-serif;
+    --font-display: -apple-system, "SF Pro Display", system-ui, sans-serif;
+    --font-headline: -apple-system, "SF Pro Display", system-ui, sans-serif;
+    --font-code: "SF Mono", ui-monospace, monospace;
+}
+
+/* panels that paint their own background instead of using the vars */
+[class^="sidebar_"],
+[class*=" sidebar_"],
+[class^="guilds_"],
+[class*=" guilds_"],
+[class^="chat_"],
+[class*=" chat_"],
+[class*="chatContent_"],
+[class*="membersWrap_"],
+[class^="members_"],
+[class*=" members_"],
+[class*="privateChannels_"],
+[class*="container_"][class*="themed_"] {
+    background: transparent !important;
+}
+
+/* bottom user panel and composer as faint raised glass */
+[class^="panels_"],
+[class*=" panels_"] {
+    background: var(--ash-raise) !important;
+    border: 1px solid var(--ash-line) !important;
+}
+
+/* hairline between server list, channels, chat, members */
+[class^="sidebar_"],
+[class*=" sidebar_"] {
+    border-right: 1px solid var(--ash-line) !important;
+}
+
+[class*="membersWrap_"] {
+    border-left: 1px solid var(--ash-line) !important;
+}
+
+/* quieter scrollbars */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: transparent !important;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+/* settings and other modals: solid so the chat underneath doesn't bleed through */
+[class^="modal_"],
+[class*=" modal_"] {
+    background: var(--ash-float) !important;
+    border: 1px solid var(--ash-line) !important;
+}

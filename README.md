@@ -21,7 +21,9 @@ The top row is the grey ramp, from the black glass up to the text color. The bot
 
 It's built to match my [T3 Code glass build](https://github.com/dyascj/t3code/tree/glass), so the terminal and the browser read as the same app. Ghostty reads the palette from `.config/ghostty/ash.conf` and dresses like T3 in `config`: black glass at 85% with a 23px blur, SF Mono, tabs in the title bar, roomy padding, and a matching dock icon. Zen Browser wears it as a `userChrome.css` in `.config/zen/chrome/`, riding Zen's native macOS vibrancy on the clear fullScreenUI material with a 55% black wash on top, a touch lighter than T3's black glass. The acrylic url bar and compact sidebar float over it. Websites can be see-through too: bootstrap turns on Zen's transparent-page pref and the sheet drops the white tint Zen lays behind pages, then the [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) add-on clears the backgrounds of the sites in its style library (GitHub, YouTube and friends), so the glass runs right through the page.
 
-Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs. One palette, five surfaces.
+Zed has a full theme at `.config/zed/themes/ash.json` with a blurred window. VS Code gets the colors through `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in `settings.json`, on solid black. btop has a transparent variant in `.config/btop/themes/ash.theme` with grey boxes and pastel graphs. Discord runs [Vencord](https://vencord.dev) with an Ash theme in `Library/Application Support/Vencord/themes/`: a 40% black wash over macOS sidebar vibrancy, with settings and other modals kept near solid so they stay readable. One palette, six surfaces.
+
+macOS drops a window's blur when it loses focus, and Vencord has no switch for that. `Library/LaunchAgents/local.discord.vencord-vibrancy.plist` watches Vencord's install and adds Electron's `visualEffectState: "active"` back to its patcher every time Vencord updates itself, so Discord stays glass in the background.
 
 ## Windows
 
@@ -44,6 +46,7 @@ My Keychron has no right Option key, so right Control stands in for it. A Launch
 | [T3 Code](https://github.com/dyascj/t3code/tree/glass) (my glass fork) | cloned by bootstrap |
 | [Slat](https://github.com/dyascj/slat) (mine) | installed by bootstrap |
 | btop | `.config/btop/` |
+| Discord ([Vencord](https://vencord.dev)) | `Library/Application Support/Vencord/` |
 | neofetch | `.config/neofetch/` |
 | Homebrew | `.Brewfile` |
 
@@ -59,17 +62,19 @@ yadm bootstrap
 
 Homebrew comes first because yadm installs through it. `yadm clone` puts every file where it belongs, and the [bootstrap script](.config/yadm/bootstrap) handles the rest:
 
-- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, Sol, Tailscale, Vorssaint). A failed package gets reported and the setup keeps going.
+- `brew bundle --global` installs everything in the Brewfile, apps included (Ghostty, Zen, Zed, VS Code, Sol, Tailscale, Vorssaint, Discord). A failed package gets reported and the setup keeps going.
 - Copies SF Mono out of Terminal.app so Ghostty can use it.
 - Installs my VS Code extensions from a saved list.
 - Clones my [T3 Code glass fork](https://github.com/dyascj/t3code/tree/glass) into `~/Developer/t3code-glass`, links `t3-glass-update` into `~/.local/bin`, and sets up the private Rust toolchain it builds with. Run `t3-glass-update` afterwards to build and install the app (it takes a few minutes).
 - Sets zsh as the default shell.
 - Installs [Slat](https://github.com/dyascj/slat) from its latest release and opens it.
+- Patches Vencord into Discord and loads the LaunchAgent that keeps Discord glassy when it loses focus.
 
 A few things only macOS can say yes to, so they wait for me after bootstrap:
 
 - **Privacy & Security > Accessibility:** turn on Slat, or nothing tiles.
 - **Tailscale:** sign in.
+- **Privacy & Security > App Management:** allow the terminal, quit Discord, and rerun bootstrap if the Vencord step failed.
 - **Zen Internet:** install the add-on in Zen, open its popup and hit "Refetch latest styles" with auto-update on.
 
 Zen hides its config behind a machine-specific profile folder, so it's the one exception to the no-symlinks rule: bootstrap finds the active Zen profile, links `userChrome.css` in from `.config`, and turns on the prefs the theme needs. Zen has no profile until it's opened once, so launch it, quit it, and run `yadm bootstrap` again to wire it up. Every step skips what's already done, so rerunning is safe.
